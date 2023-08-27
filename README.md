@@ -726,4 +726,4 @@ Some part of this program contains code from [typeshed](https://github.com/pytho
 
 # Relese Note
 
-0.1.0 (날짜): 첫 릴리즈
+0.1.1 (2023-08-27): 첫 릴리즈

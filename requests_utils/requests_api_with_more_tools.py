@@ -76,7 +76,7 @@ def request(method, url, **kwargs):
 
     Usage::
 
-      >>> from requests_plus import requests
+      >>> from requests_utils import requests
       >>> req = requests.request('GET', 'https://httpbin.org/get')
       >>> req
       <Response [200]>
@@ -111,7 +111,7 @@ def request(method, url, **kwargs):
             try:
                 return response_proxy.ResponseProxy(send_request())
             except exceptions.ConnectionError as e:
-                logging.warning(f'Retring connection... try #{i + 1}')
+                logging.warning(f'Retring connection... #{i + 1} try\n{url}')
                 collected_exceptions.append(e)
     else:
         return response_proxy.ResponseProxy(send_request())

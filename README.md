@@ -738,4 +738,5 @@ Some part of this program contains code from [typeshed](https://github.com/pytho
 # Relese Note
 
 0.2.0 (2023-08-27): CustomDefaults 추가
+
 0.1.1 (2023-08-27): 첫 릴리즈

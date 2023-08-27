@@ -714,6 +714,17 @@ Traceback (most recent call last):
 AttributeError: ResultSet object has no attribute 'text'. You're probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?
 ```
 
+## CustomDefaults
+`CustomDefaults`를 통해 직접 기본값을 설정할 수 있습니다. 이 값으로 일반 get/options/head/post/put/patch/delete 및 c../a../ac.. 함수의 기본값을 효과적으로 설정할 수 있습니다.
+
+```python
+>>> from requests_utils import CustomDefaults
+>>>
+>>> requests = CustomDefaults(headers={'User-Agent': 'Hello, World!'})
+>>> requests.get("https://api-bdc.net/data/client-info").json()['userAgentRaw']
+'Hello, World!'
+```
+
 # 라이선스 정보
 
 이 프로그램은 MIT 라이선스로 공유됩니다.
@@ -726,4 +737,5 @@ Some part of this program contains code from [typeshed](https://github.com/pytho
 
 # Relese Note
 
+0.2.0 (2023-08-27): CustomDefaults 추가
 0.1.1 (2023-08-27): 첫 릴리즈

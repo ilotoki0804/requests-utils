@@ -56,10 +56,10 @@ def freeze_dict_and_list(alert: bool = True, error: bool = False):
         if isinstance(value, Hashable):
             return value
         # 앞에서 Hashable은 이미 나가기 때문에 Iterable이나 Mapping 검사 시 hashable인지는 검사하지 않아도 됨.
-        if isinstance(value, Iterable):
-            return tuple(value)
-        if isinstance(value, Mapping):
+        if isinstance(value, Mapping):  # Mapping은 Iterable이기 때문에 Iterable보다 더 먼저 와야 값이 손상되지 않음!
             return frozendict(value)
+        if isinstance(value, Iterable):  # Mapping같이 특정한 경우에는 값이 손상될 수 있음.
+            return tuple(value)
         if error:
             raise TypeError(f"type of '{value}' {type(value)}, "
                             "which is nether hashable, iterable(like list), nor mapping(like dict).")
@@ -76,6 +76,7 @@ def freeze_dict_and_list(alert: bool = True, error: bool = False):
             new_args = [made_it_hashable(argument) for argument in args]
             new_kwargs = {kwname: made_it_hashable(kwvalue)
                           for kwname, kwvalue in kwargs.items()}
+            logging.debug((new_args, new_kwargs))
             return func(*new_args, **new_kwargs)
         return inner
 

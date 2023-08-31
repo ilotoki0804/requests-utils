@@ -19,10 +19,10 @@ from requests import sessions, exceptions
 
 if __name__ in {'__main__', 'requests_api_with_more_tools'}:
     import response_proxy
-    from ignore_unhashable import ignore_unhashable
+    from dealing_unhashable_args import freeze_dict_and_list
 else:
     from . import response_proxy
-    from .ignore_unhashable import ignore_unhashable
+    from .dealing_unhashable_args import freeze_dict_and_list
 
 __all__ = (
     'request',
@@ -226,21 +226,21 @@ def delete(url, **kwargs):
 # CACHED REQESTS
 
 
-@ignore_unhashable
+@freeze_dict_and_list()
 @lru_cache()
 def cget(url, params=None, **kwargs):
     "cached requests.get"
     return get(url, params=params, **kwargs)
 
 
-@ignore_unhashable
+@freeze_dict_and_list()
 @lru_cache()
 def coptions(url, **kwargs):
     "cached requests.options"
     return options(url, **kwargs)
 
 
-@ignore_unhashable
+@freeze_dict_and_list()
 @lru_cache()
 def chead(url, **kwargs):
     "cached requests.head"
@@ -248,28 +248,28 @@ def chead(url, **kwargs):
     return head(url, **kwargs)
 
 
-@ignore_unhashable
+@freeze_dict_and_list()
 @lru_cache()
 def cpost(url, data=None, json=None, **kwargs):
     "cached requests.post"
     return post(url, data=data, json=json, **kwargs)
 
 
-@ignore_unhashable
+@freeze_dict_and_list()
 @lru_cache()
 def cput(url, data=None, **kwargs):
     "cached requests.put"
     return put(url, data=data, **kwargs)
 
 
-@ignore_unhashable
+@freeze_dict_and_list()
 @lru_cache()
 def cpatch(url, data=None, **kwargs):
     "cached requests.patch"
     return patch(url, data=data, **kwargs)
 
 
-@ignore_unhashable
+@freeze_dict_and_list()
 @lru_cache()
 def cdelete(url, **kwargs):
     "cached requests.delete"

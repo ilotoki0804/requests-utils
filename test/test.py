@@ -1,12 +1,23 @@
 import logging
+from typing import Sequence, Mapping
 
-if __name__ in ("__main__", "test"):
-    # 파일을 이용하는 것은 아님. 만약 제대로 사용하려면 상대 경로로 실행해야 함.
-    logging.warning('파일이 아닌 설치된 모듈에서 실행되고 있습니다.')
-    import requests_utils
-else:
-    from .. import requests_utils
+import requests_utils
+logging.warning('파일이 아닌 설치된 모듈을 실행하고 있습니다.')
 
+def test_freeze_dict_and_list():
+    freeze_dict_and_list = requests_utils.ignore_unhashable.freeze_dict_and_list
+
+    # @freeze_dict_and_list()
+    def hello(a: Mapping, b: Sequence = ()):
+        # print(a, b)
+        return a, b
+
+    hello_decorated = freeze_dict_and_list()(hello)
+
+    assert hello(a={1: 2, 3: 4}, b=[1, 2, 3]) == ({1: 2, 3: 4}, [1, 2, 3])
+    assert hello_decorated(a={1: 2, 3: 4}, b=[1, 2, 3]) == ((1, 3), (1, 2, 3))
+
+    print('test_freeze_dict_and_list test passed.')
 
 if __name__ == "__main__":
-    pass
+    test_freeze_dict_and_list()

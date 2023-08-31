@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import functools
-from bs4.element import Tag
 from abc import abstractmethod, ABCMeta
 from typing import (
     Any,
     TypeVar,
     # Generic,
 )
+
+from bs4.element import Tag
 
 T = TypeVar('T')
 
@@ -54,4 +55,3 @@ class ChainingBroadcastList(AbstractBroadcastList[T]):
 
 class TagBroadcastList(ChainingBroadcastList[Tag]):  # for typing purpose, see 'broadcast_list.pyi'.
     """Chaining Broadcast list especially for Tags, seperated due to typing purpose."""
-    ...

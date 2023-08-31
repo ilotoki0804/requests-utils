@@ -2,7 +2,7 @@ from __future__ import annotations
 
 
 class EmptyResultError(Exception):
-    def __init__(self, error_message: str, selector: str | None = None, url=None, status_code: int | None = None):
+    def __init__(self, error_message: str, selector: str | None = None, url=None, status_code: int | None = None) -> None:
         if not url:
             url = "(can't show URL probably because `markup_or_response` parameter was string)"
 
@@ -19,7 +19,7 @@ class EmptyResultError(Exception):
 
         if str(status_code)[0] in {'4', '5'}:
             error_string = (
-                f'WARNING: status code (HTTP{status_code}) looks odd. check your identity and headers again.\n'
+                f'WARNING: status code (HTTP{status_code}) looks odd. check your identity, headers, and URL again.\n'
                 + error_string
                 + f', status code: {status_code}'
             )

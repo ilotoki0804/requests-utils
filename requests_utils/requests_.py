@@ -1,11 +1,10 @@
 from __future__ import annotations
 
+# '#': 작동하긴 하지만 공식적으로 지원하지 않는 모듈
+# '# #': 작동하지 않는 모듈
 from requests import (
-    # '#': 작동하긴 하지만 공식적으로 지원하지 않는 모듈
-    # '# #': 작동하지 않는 모듈
 
-    sessions,
-    exceptions,
+
     ConnectTimeout,
     ConnectionError,
     # DependencyWarning,
@@ -85,7 +84,6 @@ if __name__ in {'__main__', 'requests_proxy'}:
         acget, acoptions, achead, acpost, acput, acpatch, acdelete,
         aget, aoptions, ahead, apost, aput, apatch, adelete,
     )
-    pass
 else:
     from .requests_api_with_more_tools import (
         request,
@@ -94,11 +92,3 @@ else:
         acget, acoptions, achead, acpost, acput, acpatch, acdelete,
         aget, aoptions, ahead, apost, aput, apatch, adelete,
     )
-
-__all__ = (
-    'request',
-    'get', 'options', 'head', 'post', 'put', 'patch', 'delete',
-    'cget', 'coptions', 'chead', 'cpost', 'cput', 'cpatch', 'cdelete',
-    'acget', 'acoptions', 'achead', 'acpost', 'acput', 'acpatch', 'acdelete',
-    'aget', 'aoptions', 'ahead', 'apost', 'aput', 'apatch', 'adelete',
-)

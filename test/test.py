@@ -4,8 +4,8 @@ import time
 
 from frozendict import frozendict
 import requests_utils
-logging.warning('파일이 아닌 설치된 모듈을 실행하고 있습니다.')
 from requests_utils import requests
+logging.warning('파일이 아닌 설치된 모듈을 실행하고 있습니다.')
 
 def test_freeze_dict_and_list() -> None:
     freeze_dict_and_list = requests_utils.dealing_unhashable_args.freeze_dict_and_list

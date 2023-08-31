@@ -2,7 +2,13 @@ from __future__ import annotations
 
 import functools
 import logging
-from typing import Any, Hashable, Mapping, Iterable, Callable, Sequence
+from typing import (
+    Any,
+    Hashable,
+    Mapping,
+    Iterable,
+    Callable
+)
 
 from frozendict import frozendict
 
@@ -10,7 +16,7 @@ from frozendict import frozendict
 def ignore_unhashable(func):
     """
     Sorce: https://stackoverflow.com/a/64111268/21997874 (MIT License maybe)
-    Used for caching functions.
+    만약 unhashable을 만나 caching이 중지되었다면, 오류를 내보내지 않게 만드는 함수입니다.
     """
     uncached = func.__wrapped__
     attributes = functools.WRAPPER_ASSIGNMENTS + ('cache_info', 'cache_clear')
@@ -27,10 +33,7 @@ def ignore_unhashable(func):
                 error_description = ('If one of arguments is unhashable, function cannot be cached. '
                                      'Please do not use caching.\n')
                 if problematic_args:
-                    error_description += (
-                        'problematic argument: ' if len(problematic_args) == 1 else 'problematic arguments: '
-                        + ', '.join(map(str, problematic_args))
-                    )
+                    error_description += 'problematic argument(s): '
                 if problematic_args and problematic_kwargs:
                     error_description += '\n'
                 if problematic_kwargs:

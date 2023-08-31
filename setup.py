@@ -1,6 +1,8 @@
-from setuptools import setup, find_packages
 import re
 from pathlib import Path
+
+from setuptools import setup, find_packages
+
 from requests_utils import __version__
 
 long_description = '이 설명은 최신 버전이 아닐 수 있습니다. 만약 최신 버전을 확인하고 싶으시다면 [여기](https://github.com/ilotoki0804/requests-utils)를 참고하세요.\n'
@@ -19,10 +21,10 @@ setup(
     long_description_content_type='text/markdown',
     license='MIT',
     url='https://github.com/ilotoki0804/requests-utils',
-    install_requires=Path('requirements.txt').read_text().split(),
+    install_requires=Path('requirements.txt').read_text(encoding='utf-8').split(),
     packages=find_packages(exclude=[]),
     package_data={
-        "": ["*.pyi"],
+        "": ["*.pyi", 'py.typed'],
     },
     keywords=['requests', 'bs4', 'BeautifulSoup', 'async', 'caching', 'cache'],
     python_requires='>=3.10',

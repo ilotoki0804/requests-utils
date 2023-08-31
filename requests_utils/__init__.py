@@ -5,5 +5,5 @@ else:
     from . import requests_ as requests
     from .custom_defaults import CustomDefaults
 
-__version__ = (0, 2, 0)
+__version__ = (0, 2, 1)
 __title__ = "requests_utils"

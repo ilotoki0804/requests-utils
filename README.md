@@ -182,9 +182,9 @@ WARNING:root:Retring connection... try #10
 
 ### 캐시된 요청 함수
 
-일반 requests.get/../delete 요청과 동일하지만 캐시됩니다. 이때 캐시는 후술할 `비동기적이며 캐시된 요청 함수`와 공유됩니다. 앞에 `c`를 붙여 requests.cget/coptions/chead/cpost/cput/cpatch/cdelete로 함수를 작성해 사용할 수 있습니다.
+일반 requests.get/../delete 요청과 동일하지만 캐시됩니다. 이때 캐시는 후술할 `비동기적이며 캐시된 요청 함수`와 공유됩니다. 하지만 각 메소드들끼리 공유되지는 않습니다. 앞에 `c`를 붙여 requests.cget/coptions/chead/cpost/cput/cpatch/cdelete로 함수를 작성해 사용할 수 있습니다.
 
-같은 URL을 보내도 다른 결과를 응답할 수 있는 동적인 서비스를 사용하거나(응답의 변화를 반영하지 않음) 응답의 크기가 클 경우(메모리가 낭비될 수 있음) 사용하지 않는 것이 좋습니다.
+같은 URL을 보내도 다른 결과를 응답할 수 있는 동적인 서비스를 사용하거나(시간에 따른 응답의 변화를 반영하지 않음) 응답의 크기가 클 경우(메모리가 낭비될 수 있음) 사용하지 않는 것이 좋습니다.
 
 ```python
 >>> # 기기 사양과 인터넷 연결 품질에 따라 결과는 다를 수 있음
@@ -214,9 +214,9 @@ WARNING:root:Retring connection... try #10
 
 ### 비동기적이며 캐시된 요청 함수
 
-비동기적이며 캐시되는 요청입니다. 이때 캐시는 `캐시된 요청 함수`와 공유됩니다. 앞에 `ac`를 붙여 requests.acget/acoptions/achead/acpost/acput/acpatch/acdelete로 함수를 작성합니다.
+비동기적이며 캐시되는 요청입니다. 이때 캐시는 같은 메소드라면 `캐시된 요청 함수`와 공유됩니다. 앞에 `ac`를 붙여 requests.acget/acoptions/achead/acpost/acput/acpatch/acdelete로 함수를 작성합니다.
 
-같은 URL을 보내도 다른 결과를 응답할 수 있는 동적인 서비스를 사용하거나(응답의 변화를 반영하지 않음) 응답의 크기가 클 경우(메모리가 낭비될 수 있음) 사용하지 않는 것이 좋습니다.
+같은 URL을 보내도 다른 결과를 응답할 수 있는 동적인 서비스를 사용하거나(시간에 따른 응답의 변화를 반영하지 않음) 응답의 크기가 클 경우(메모리가 낭비될 수 있음) 사용하지 않는 것이 좋습니다.
 
 `run_in_executer`는 기본적으로 켜져 있습니다. 자세한 내용은 아래의 `run_in_executer 사용`을 참고하세요.
 
@@ -736,6 +736,8 @@ Some part of this program contains code from [requests](https://github.com/psf/r
 Some part of this program contains code from [typeshed](https://github.com/python/typeshed) library.
 
 # Relese Note
+
+0.2.1 (2023-08-31): py.typed 추가, freeze_dict_and_list 추가
 
 0.2.0 (2023-08-27): CustomDefaults 추가
 

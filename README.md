@@ -46,7 +46,7 @@ from requests_utils import requests
 ```
 timeout 기본값: 40
 headers 기본값: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'}
-attempt 기본값: 1
+attempts 기본값: 1
 ```
 
 ```python
@@ -66,15 +66,15 @@ ResponseProxy는 기존 Response와 100% 호환되는 Response의 subclass입니
 
 기능을 잘 이해하지 못했다면 기존에 Response를 사용하던 방식대로 사용하시면 문제 없이 작동합니다.
 
-### attempt
+### attempts
 
-`attempt`는 파라미터로, 모종의 이유로 `ConnectionError`가 발생했을 때 같은 requests를 몇 번 더 반복할 것인지 설정하는 파라미터입니다.
+`attempts`는 파라미터로, 모종의 이유로 `ConnectionError`가 발생했을 때 같은 requests를 몇 번 더 반복할 것인지 설정하는 파라미터입니다.
 
 만약 10번을 실행하고도 실패했다면 가장 최근 3개의 연결이 실패한 이유를 보여줍니다. 3.11 이하라면 마지만 한 개의 연결 실패 이유만 보여줍니다.
 ```python
 >>> from requests_utils import requests
 >>>
->>> requests.get('https://some-not-working-website.com', attempt=10)
+>>> requests.get('https://some-not-working-website.com', attempts=10)
 WARNING:root:Retring connection... try #1
 WARNING:root:Retring connection... try #2
 WARNING:root:Retring connection... try #3
@@ -437,58 +437,10 @@ False
 자세한 내용은 아래를 살펴보세요.
 
 ### 기본값
-
-어떤 parser를 기본적으로 사용할지와 BroadcastList(후술)를 기본적으로 사용할지 말지를 설정할 수 있습니다. 이 값은 `parser` 파라미터나(와) `use_broadcast_list` 파라미터를 생략하면 호출됩니다.
-
 ```
-default_parser
+parser
     기본으로 설정된 값: 'html.parser'
-default_use_broadcast_list
-    기본으로 설정된 값: True
 ```
-
-```python
->>> from requests_utils import requests
->>>
->>> requests.default_parser = "lxml"  # 기본 parser를 lxml로 설정
->>> res = requests.get("https://python.org")
->>> print(res.soup())  # lxml parser가 적용됨 (parser 파라미터가 생략됨.)
-<!DOCTYPE html>
-...
-</body>
-</html>
-```
-
-`reset_defaults()`로 parser 기본값과 BroadcastList 사용 여부를 초기 설정 상태으로 되돌릴 수 있습니다. 이때 되돌려지는 값은 `requests_utils.requests` 관련 값도 포함됩니다. 자세한 사항은 `requests_utils.requests` 문단의 `기본값`을 참고하세요.
-
-```python
-# 출력량 주의!
->>> from requests_utils import requests
->>>
->>> requests.default_parser = "lxml"  # 기본 parser를 lxml로 설정
->>> response = requests.get("https://python.org")
->>> print(response.soup())  # lxml parser가 적용됨 (parser 파라미터가 생략됨.)
-<!DOCTYPE html>
-...
-</body>
-</html>
->>>
->>> requests.reset_defaults()
->>> response = requests.get("https://python.org")
->>> print(response.soup())  # 기본값인 html.parser가 이용됨 (parser 파라미터가 생략됨.)
-<!DOCTYPE html>
-...
-</body>
-</html>
->>> print(response.soup(parser='lxml'))  # parser를 직접 적용해서 기본 parser 외의 parser를 사용할 수 있음.
-<!DOCTYPE html>
-...
-</body>
-</html>
-```
-
-BroadcastList의 기능을 소개하면 너무 내용이 길어질 수 있기에 여기에선 생략합니다. 자세한 내용은 `BroadcastList` 파트를 확인해 주세요.
-
 ### `.soup()`
 
 `.soup()`는 텍스트나 response를 받아 `BeatifulSoup`로 내보냅니다.
@@ -571,7 +523,7 @@ requests_utils.exceptions.EmptyResultError: Result of select is empty list("[]")
 selector: data-some-complex-and-error-prone-selector, URL: https://www.python.org/
 ```
 
-이 함수를 기본적으로 BroadcastList를 출력값으로 설정하고 있습니다. BroadcastList에 대해 자세히 알고 싶다면 아래의 `BroadcastList` 항목을 확인해 보세요.
+<!-- 이 함수를 기본적으로 BroadcastList를 출력값으로 설정하고 있습니다. BroadcastList에 대해 자세히 알고 싶다면 아래의 `BroadcastList` 항목을 확인해 보세요. -->
 
 ### `.soup_select_one()`
 
@@ -660,7 +612,7 @@ selector: data-some-complex-and-error-prone-selector, URL: https://www.python.or
 [<LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Sunny</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Sunny</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Sunny</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Sunny</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Sun</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>]
 ```
 
-### BroadcastList
+<!-- ### BroadcastList
 
 `.soup_select()`와 `.xml_select()`의 경우에는 리스트(와 비슷한 것)를 값으로 내보냅니다. 이는 `.soup()`나 `.soup_select_one()`에서 기대할 수 있는 `.text`와 같은 파라미터 사용을 어렵게 합니다.
 
@@ -712,7 +664,7 @@ Traceback (most recent call last):
   File "...element.py", line 2428, in __getattr__
     raise AttributeError(
 AttributeError: ResultSet object has no attribute 'text'. You're probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?
-```
+``` -->
 
 ## CustomDefaults
 `CustomDefaults`를 통해 직접 기본값을 설정할 수 있습니다. 이 값으로 일반 get/options/head/post/put/patch/delete 및 c../a../ac.. 함수의 기본값을 효과적으로 설정할 수 있습니다.
@@ -736,6 +688,8 @@ Some part of this program contains code from [requests](https://github.com/psf/r
 Some part of this program contains code from [typeshed](https://github.com/python/typeshed) library.
 
 # Relese Note
+
+0.2.2 (2023-09-08): attempt parameter를 attempts로 변경, TagBroadcastList 제거
 
 0.2.1 (2023-08-31): py.typed 추가, freeze_dict_and_list 추가
 

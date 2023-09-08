@@ -37,11 +37,11 @@ def request(method, url, **kwargs):
     """기본값, 재시도 횟수 등 추가 기능이 들어간 requests_plus 버전의 requests.request 구현입니다.
 
     ## 추가된 기능
-    만약 명시하지 않았다면 기본값이 적용됩니다. timeout의 기본값은 100, headers의 기본값은 간단한 user agent, attempt의 기본값은 1입니다.
+    만약 명시하지 않았다면 기본값이 적용됩니다. timeout의 기본값은 100, headers의 기본값은 간단한 user agent, attempts의 기본값은 1입니다.
 
     ## 기존 requests 라이브러리에는 없는 parameter
-    :param attempt: (optional) request가 ConnectionError를 받았을 때 같은 요청을 몇 번 다시 실행할 것인지를 정합니다.
-    :type attempt: positive integer
+    :param attempts: (optional) request가 ConnectionError를 받았을 때 같은 요청을 몇 번 다시 실행할 것인지를 정합니다.
+    :type attempts: positive integer
 
     ## 기존 requests 라이브러리에 있었던 parameter
     :param method: method for the new :class:`Request` object: ``GET``, ``OPTIONS``, ``HEAD``, ``POST``, ``PUT``, ``PATCH``, or ``DELETE``.
@@ -99,15 +99,15 @@ def request(method, url, **kwargs):
 
     kwargs.setdefault('timeout', 40)
 
-    if 'attempt' not in kwargs:
-        attempt = 1
+    if 'attempts' not in kwargs:
+        attempts = 1
     else:
-        attempt = kwargs['attempt']
-        del kwargs['attempt']
+        attempts = kwargs['attempts']
+        del kwargs['attempts']
 
     collected_exceptions = []
-    if attempt > 1:
-        for i in range(attempt):
+    if attempts > 1:
+        for i in range(attempts):
             try:
                 return response_proxy.ResponseProxy(send_request())
             except exceptions.ConnectionError as e:

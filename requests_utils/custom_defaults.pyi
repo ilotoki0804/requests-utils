@@ -3,6 +3,7 @@ if __name__ in {'__main__', 'my_defaults'}:
 else:
     from . import requests_api_with_more_tools
 
+
 class CustomDefaults:
     get = staticmethod(requests_api_with_more_tools.get)
     options = staticmethod(requests_api_with_more_tools.options)
@@ -38,7 +39,7 @@ class CustomDefaults:
             *,
             method=...,
             url=...,
-            attempt=...,
+            attempts=...,
             params=...,
             data=...,
             headers=...,
@@ -53,5 +54,5 @@ class CustomDefaults:
             verify=...,
             cert=...,
             json=...,
-        ):
+    ):
         ...

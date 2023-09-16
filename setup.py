@@ -24,7 +24,8 @@ setup(
     install_requires=Path('requirements.txt').read_text(encoding='utf-8').split(),
     packages=find_packages(exclude=[]),
     package_data={
-        "": ["*.pyi", 'py.typed'],
+        # "": ["*.pyi", 'py.typed'],
+        "": ["*.pyi"],
     },
     keywords=['requests', 'bs4', 'BeautifulSoup', 'async', 'caching', 'cache'],
     python_requires='>=3.10',

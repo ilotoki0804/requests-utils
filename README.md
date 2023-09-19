@@ -668,7 +668,7 @@ Some part of this program contains code from [typeshed](https://github.com/pytho
 
 # Relese Note
 
-0.2.3 (2023-09-19): header 기본값 변경, ConnectionError시 에러 한 개만 보이는 것으로 변경, attempts로 재시도할 때 성공했을 때 메시지 추가, retry에서 url 제거
+0.2.3 (2023-09-19): header 기본값 변경, ConnectionError시 에러 한 개만 보이는 것으로 변경, attempts로 재시도할 때 성공했을 때 메시지 추가, retry에서 url 제거, setup.py와 관련 파일 변경
 
 0.2.2 (2023-09-08): attempt parameter를 attempts로 변경, TagBroadcastList 제거
 

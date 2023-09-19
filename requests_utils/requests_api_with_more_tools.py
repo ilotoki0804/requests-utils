@@ -89,13 +89,25 @@ def request(method, url, **kwargs):
         with sessions.Session() as session:
             return session.request(method=method, url=url, **kwargs)
 
-    kwargs.setdefault(
-        'headers',
-        {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-                          '(KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'
-        }
-    )
+    # kwargs.setdefault('headers', {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+    #                               '(KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'})
+
+    kwargs.setdefault('headers', {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "ko-KR,ko;q=0.9",  # defined by user.
+        # "Host": "",
+        "Sec-Ch-Ua": '"Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"',
+        "Sec-Ch-Ua-Mobile": "?0",
+        "Sec-Ch-Ua-Platform": '"Windows"',
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Upgrade-Insecure-Requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+        # "X-Amzn-Trace-Id": ""
+    })
 
     kwargs.setdefault('timeout', 40)
 
@@ -105,24 +117,22 @@ def request(method, url, **kwargs):
         attempts = kwargs['attempts']
         del kwargs['attempts']
 
-    collected_exceptions = []
+    last_exception = None
     if attempts > 1:
-        for i in range(attempts):
+        for _ in range(attempts):
             try:
-                return response_proxy.ResponseProxy(send_request())
+                response = response_proxy.ResponseProxy(send_request())
             except exceptions.ConnectionError as e:
-                logging.warning(f'Retring connection... #{i + 1} try\n{url}')
-                collected_exceptions.append(e)
+                logging.warning('Retring...')
+                last_exception = e
+            else:
+                if last_exception is not None:
+                    logging.warning(f'Sucessfully retried from {url}')
+                return response
     else:
         return response_proxy.ResponseProxy(send_request())
 
-    try:
-        collected_exceptions = collected_exceptions[-3:]
-        raise ExceptionGroup(
-            f'Trying mutiple time but failed to get data.(Under: Recent {len(collected_exceptions)} exceptions)',
-            collected_exceptions)
-    except NameError:  # for under python 3.11
-        raise collected_exceptions[-1]
+    raise ConnectionError(f'Trying {attempts} times but failed to get data.\nURL: {url}') from last_exception
 
 
 def get(url, params=None, **kwargs):

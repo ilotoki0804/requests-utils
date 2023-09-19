@@ -31,7 +31,7 @@ requests와 bs4는 같이 설치되지만 BeatifulSoup의 추가적인 parser인
 from requests_utils import requests
 ```
 
-이 라이브러리는 requests 라이브러리와 99% 호환되며, 그 위에 편리한 기능을 얹은 형태입니다.
+이 라이브러리는 requests 라이브러리와 99% 호환되며, 그 위에 편리한 기능을 얹은 형태입니다. 즉, 기존 `import requests`를 위의 코드로 교체하면 절대 호환성 오류가 나지 않습니다.
 
 이 모듈은 `requests` 라이브러리를 호환성 있게 대체하는 목적이 가지고 있습니다. 따라서 기존 코드에서 `requests`를 import하는 부분을 위의 코드로 변경하여도 깨지는 경우가 거의 발생하지 않습니다. 호환되지 않는 경우를 알고 싶다면 `requests 모듈과 호환되지 않는 부분` 파트를 참고하세요.
 
@@ -45,7 +45,20 @@ from requests_utils import requests
 
 ```
 timeout 기본값: 40
-headers 기본값: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'}
+headers 기본값: {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "ko-KR,ko;q=0.9",
+    "Sec-Ch-Ua": '"Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"',
+    "Sec-Ch-Ua-Mobile": "?0",
+    "Sec-Ch-Ua-Platform": '"Windows"',
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+}
 attempts 기본값: 1
 ```
 
@@ -53,9 +66,22 @@ attempts 기본값: 1
 >>> from requests_utils import requests
 >>>
 >>> from requests_utils import requests
->>> res = requests.get("https://api-bdc.net/data/client-info")  # API that specifies User Agent. Don't execute this command unless you trust this API.
->>> res.json()['userAgentRaw']
-'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'
+>>> res = requests.get("https://httpbin.org/headers")
+>>> res.json()['headers']
+{'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+ 'Accept-Encoding': 'gzip, deflate, br',
+ 'Accept-Language': 'ko-KR,ko;q=0.9',
+ 'Host': 'httpbin.org',
+ 'Sec-Ch-Ua': '"Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"',
+ 'Sec-Ch-Ua-Mobile': '?0',
+ 'Sec-Ch-Ua-Platform': '"Windows"',
+ 'Sec-Fetch-Dest': 'document',
+ 'Sec-Fetch-Mode': 'navigate',
+ 'Sec-Fetch-Site': 'none',
+ 'Sec-Fetch-User': '?1',
+ 'Upgrade-Insecure-Requests': '1',
+ 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
+ 'X-Amzn-Trace-Id': ...}
 ```
 
 ### 응답
@@ -70,96 +96,49 @@ ResponseProxy는 기존 Response와 100% 호환되는 Response의 subclass입니
 
 `attempts`는 파라미터로, 모종의 이유로 `ConnectionError`가 발생했을 때 같은 requests를 몇 번 더 반복할 것인지 설정하는 파라미터입니다.
 
-만약 10번을 실행하고도 실패했다면 가장 최근 3개의 연결이 실패한 이유를 보여줍니다. 3.11 이하라면 마지만 한 개의 연결 실패 이유만 보여줍니다.
+만약 10번을 실행하고도 실패했다면 가장 최근에 실패한 연결의 이유를 보여줍니다.
 ```python
 >>> from requests_utils import requests
 >>>
 >>> requests.get('https://some-not-working-website.com', attempts=10)
-WARNING:root:Retring connection... try #1
-WARNING:root:Retring connection... try #2
-WARNING:root:Retring connection... try #3
-WARNING:root:Retring connection... try #4
-WARNING:root:Retring connection... try #5
-WARNING:root:Retring connection... try #6
-WARNING:root:Retring connection... try #7
-WARNING:root:Retring connection... try #8
-WARNING:root:Retring connection... try #9
-WARNING:root:Retring connection... try #10
-  + Exception Group Traceback (most recent call last):
-  |   File "<stdin>", line 1, in <module>
-  |   File "...requests_api_with_more_tools.py", line 139, in get
-  |     return request("get", url, params=params, **kwargs)
-  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  |   File "...requests_api_with_more_tools.py", line 121, in request
-  |     raise ExceptionGroup(
-  | ExceptionGroup: Trying mutiple time but failed to get data.(Under: Recent 3 exceptions) (3 sub-exceptions)
-  +-+---------------- 1 ----------------
+WARNING:root:Retring...
+WARNING:root:Retring...
+WARNING:root:Retring...
+WARNING:root:Retring...
+WARNING:root:Retring...
+WARNING:root:Retring...
+WARNING:root:Retring...
+WARNING:root:Retring...
+WARNING:root:Retring...
+WARNING:root:Retring...
+Traceback (most recent call last):
 ...
-    +---------------- 3 ----------------
-    | Traceback (most recent call last):
-    |   File "...connection.py", line 203, in _new_conn
-    |     sock = connection.create_connection(
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "...connection.py", line 60, in create_connection
-    |     for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "...socket.py", line 962, in getaddrinfo
-    |     for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    | socket.gaierror: [Errno 11001] getaddrinfo failed
-    |
-    | The above exception was the direct cause of the following exception:
-    |
-    | Traceback (most recent call last):
-    |   File "...connectionpool.py", line 790, in urlopen
-    |     response = self._make_request(
-    |                ^^^^^^^^^^^^^^^^^^^
-    |   File "...connectionpool.py", line 491, in _make_request    
-    |     raise new_e
-    |   File "...connectionpool.py", line 467, in _make_request    
-    |     self._validate_conn(conn)
-    |   File "...connectionpool.py", line 1092, in _validate_conn  
-    |     conn.connect()
-    |   File "...connection.py", line 611, in connect
-    |     self.sock = sock = self._new_conn()
-    |                        ^^^^^^^^^^^^^^^^
-    |   File "...connection.py", line 210, in _new_conn
-    |     raise NameResolutionError(self.host, self, e) from e
-    | urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x0000017A41452710>: Failed to resolve 'some-not-working-website.com' ([Errno 11001] getaddrinfo failed)
-    |
-    | The above exception was the direct cause of the following exception:
-    |
-    | Traceback (most recent call last):
-    |   File "...adapters.py", line 486, in send
-    |     resp = conn.urlopen(
-    |            ^^^^^^^^^^^^^
-    |   File "...connectionpool.py", line 844, in urlopen
-    |     retries = retries.increment(
-    |               ^^^^^^^^^^^^^^^^^^
-    |   File "...retry.py", line 515, in increment
-    |     raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
-    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    | urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='some-not-working-website.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000017A41452710>: Failed to resolve 'some-not-working-website.com' ([Errno 11001] getaddrinfo failed)"))
-    |
-    | During handling of the above exception, another exception occurred:
-    |
-    | Traceback (most recent call last):
-    |   File "...requests_api_with_more_tools.py", line 112, in request
-    |     return response_proxy.ResponseProxy(send_request())
-    |                                         ^^^^^^^^^^^^^^
-    |   File "...requests_api_with_more_tools.py", line 90, in send_request
-    |     return session.request(method=method, url=url, **kwargs)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "...sessions.py", line 589, in request
-    |     resp = self.send(prep, **send_kwargs)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "...sessions.py", line 703, in send
-    |     r = adapter.send(request, **kwargs)
-    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "...adapters.py", line 519, in send
-    |     raise ConnectionError(e, request=request)
-    | requests.exceptions.ConnectionError: HTTPSConnectionPool(host='some-not-working-website.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000017A41452710>: Failed to resolve 'some-not-working-website.com' ([Errno 11001] getaddrinfo failed)"))
-    +------------------------------------
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+...
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at ...>: Failed to resolve 'some-not-working-website.com' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+...
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='some-not-working-website.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at ...>: Failed to resolve 'some-not-working-website.com' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+...
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='some-not-working-website.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at ...>: Failed to resolve 'some-not-working-website.com' ([Errno 11001] getaddrinfo failed)"))
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+...
+ConnectionError: Trying 10 times but failed to get data.
+URL: https://some-not-working-website.com
 ```
 
 ### 일반 요청 함수
@@ -177,7 +156,7 @@ WARNING:root:Retring connection... try #10
 ...     'body': 'bar',
 ...     'userId': 1,
 ... }).json()
-{'title': 'foo', 'body': 'bar', 'userId': 1, 'id': 201}
+{'title': 'foo', 'body': 'bar', 'userId': 1, 'id': 201}  # Same with original requests library
 ```
 
 ### 캐시된 요청 함수
@@ -688,6 +667,8 @@ Some part of this program contains code from [requests](https://github.com/psf/r
 Some part of this program contains code from [typeshed](https://github.com/python/typeshed) library.
 
 # Relese Note
+
+0.2.3 (2023-09-19): header 기본값 변경, ConnectionError시 에러 한 개만 보이는 것으로 변경, attempts로 재시도할 때 성공했을 때 메시지 추가, retry에서 url 제거
 
 0.2.2 (2023-09-08): attempt parameter를 attempts로 변경, TagBroadcastList 제거
 

@@ -74,6 +74,7 @@ def freeze_dict_and_list(alert: bool = True, error: bool = False):
         return value
 
     def wrapper(func: Callable):
+        @functools.wraps(func)
         def inner(*args, **kwargs):
             # 속도를 위해 제너레이터 컴프리헨션 대신 리스트 > 튜플 변환 사용 (약 1.5~2배 가량 빠름)
             new_args = [made_it_hashable(argument) for argument in args]

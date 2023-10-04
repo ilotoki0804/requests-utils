@@ -1,5 +1,6 @@
 from . import requests_ as requests
 from .custom_defaults import CustomDefaults
+from .header_utils import clean_headers
 
 __title__ = "requests_utils"
 __description__ = 'Various convenient features about requests.'

@@ -32,6 +32,23 @@ __all__ = (
     'aget', 'aoptions', 'ahead', 'apost', 'aput', 'apatch', 'adelete',
 )
 
+DEFAULT_HEADERS = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "ko-KR,ko;q=0.9",  # defined by user.
+    # "Host": "",
+    "Sec-Ch-Ua": '"Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"',
+    "Sec-Ch-Ua-Mobile": "?0",
+    "Sec-Ch-Ua-Platform": '"Windows"',
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+    # "X-Amzn-Trace-Id": ""
+}
+
 
 def request(method, url, **kwargs):
     """기본값, 재시도 횟수 등 추가 기능이 들어간 requests_plus 버전의 requests.request 구현입니다.
@@ -92,22 +109,7 @@ def request(method, url, **kwargs):
     # kwargs.setdefault('headers', {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
     #                               '(KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'})
 
-    kwargs.setdefault('headers', {
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "ko-KR,ko;q=0.9",  # defined by user.
-        # "Host": "",
-        "Sec-Ch-Ua": '"Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"',
-        "Sec-Ch-Ua-Mobile": "?0",
-        "Sec-Ch-Ua-Platform": '"Windows"',
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        "Upgrade-Insecure-Requests": "1",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
-        # "X-Amzn-Trace-Id": ""
-    })
+    kwargs.setdefault('headers', DEFAULT_HEADERS)
 
     kwargs.setdefault('timeout', 40)
 

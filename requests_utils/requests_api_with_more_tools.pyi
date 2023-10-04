@@ -130,6 +130,8 @@ _Verify: TypeAlias = bool | str
 
 _HeadersMapping: TypeAlias = Mapping[str, str | bytes]
 
+DEFAULT_HEADERS: dict[str, str]
+
 def request(
     method: str | bytes,
     url: str | bytes,

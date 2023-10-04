@@ -18,11 +18,8 @@ class EmptyResultError(Exception):
         )
 
         if str(status_code)[0] in {'4', '5'}:
-            error_string = (
-                f'WARNING: status code (HTTP{status_code}) looks odd. check your identity, headers, and URL again.\n'
-                + error_string
-                + f', status code: {status_code}'
-            )
+            error_string = (f'WARNING: status code (HTTP{status_code}) looks odd. '
+                            f'check your identity, headers, and URL again.\n{error_string}')
 
         super().__init__(error_string)
 

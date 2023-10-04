@@ -1,9 +1,9 @@
 import functools
 
 if __name__ in {'__main__', 'my_defaults'}:
-    import requests_api_with_more_tools
+    import requests_utils.api_with_tools as api_with_tools
 else:
-    from . import requests_api_with_more_tools
+    from . import api_with_tools
 
 
 class CustomDefaults:
@@ -14,4 +14,4 @@ class CustomDefaults:
         self.defaults = kwargs
 
     def __getattr__(self, name):
-        return functools.partial(getattr(requests_api_with_more_tools, name), **self.defaults)
+        return functools.partial(getattr(api_with_tools, name), **self.defaults)

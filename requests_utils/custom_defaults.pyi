@@ -1,38 +1,38 @@
 if __name__ in {'__main__', 'my_defaults'}:
-    import requests_api_with_more_tools
+    import requests_utils.api_with_tools as api_with_tools
 else:
-    from . import requests_api_with_more_tools
+    from . import api_with_tools
 
 
 class CustomDefaults:
-    get = staticmethod(requests_api_with_more_tools.get)
-    options = staticmethod(requests_api_with_more_tools.options)
-    head = staticmethod(requests_api_with_more_tools.head)
-    post = staticmethod(requests_api_with_more_tools.post)
-    put = staticmethod(requests_api_with_more_tools.put)
-    patch = staticmethod(requests_api_with_more_tools.patch)
-    delete = staticmethod(requests_api_with_more_tools.delete)
-    cget = staticmethod(requests_api_with_more_tools.cget)
-    coptions = staticmethod(requests_api_with_more_tools.coptions)
-    chead = staticmethod(requests_api_with_more_tools.chead)
-    cpost = staticmethod(requests_api_with_more_tools.cpost)
-    cput = staticmethod(requests_api_with_more_tools.cput)
-    cpatch = staticmethod(requests_api_with_more_tools.cpatch)
-    cdelete = staticmethod(requests_api_with_more_tools.cdelete)
-    acget = staticmethod(requests_api_with_more_tools.acget)
-    acoptions = staticmethod(requests_api_with_more_tools.acoptions)
-    achead = staticmethod(requests_api_with_more_tools.achead)
-    acpost = staticmethod(requests_api_with_more_tools.acpost)
-    acput = staticmethod(requests_api_with_more_tools.acput)
-    acpatch = staticmethod(requests_api_with_more_tools.acpatch)
-    acdelete = staticmethod(requests_api_with_more_tools.acdelete)
-    aget = staticmethod(requests_api_with_more_tools.aget)
-    aoptions = staticmethod(requests_api_with_more_tools.aoptions)
-    ahead = staticmethod(requests_api_with_more_tools.ahead)
-    apost = staticmethod(requests_api_with_more_tools.apost)
-    aput = staticmethod(requests_api_with_more_tools.aput)
-    apatch = staticmethod(requests_api_with_more_tools.apatch)
-    adelete = staticmethod(requests_api_with_more_tools.adelete)
+    get = staticmethod(api_with_tools.get)
+    options = staticmethod(api_with_tools.options)
+    head = staticmethod(api_with_tools.head)
+    post = staticmethod(api_with_tools.post)
+    put = staticmethod(api_with_tools.put)
+    patch = staticmethod(api_with_tools.patch)
+    delete = staticmethod(api_with_tools.delete)
+    cget = staticmethod(api_with_tools.cget)
+    coptions = staticmethod(api_with_tools.coptions)
+    chead = staticmethod(api_with_tools.chead)
+    cpost = staticmethod(api_with_tools.cpost)
+    cput = staticmethod(api_with_tools.cput)
+    cpatch = staticmethod(api_with_tools.cpatch)
+    cdelete = staticmethod(api_with_tools.cdelete)
+    acget = staticmethod(api_with_tools.acget)
+    acoptions = staticmethod(api_with_tools.acoptions)
+    achead = staticmethod(api_with_tools.achead)
+    acpost = staticmethod(api_with_tools.acpost)
+    acput = staticmethod(api_with_tools.acput)
+    acpatch = staticmethod(api_with_tools.acpatch)
+    acdelete = staticmethod(api_with_tools.acdelete)
+    aget = staticmethod(api_with_tools.aget)
+    aoptions = staticmethod(api_with_tools.aoptions)
+    ahead = staticmethod(api_with_tools.ahead)
+    apost = staticmethod(api_with_tools.apost)
+    aput = staticmethod(api_with_tools.aput)
+    apatch = staticmethod(api_with_tools.apatch)
+    adelete = staticmethod(api_with_tools.adelete)
 
     def __init__(
             self,

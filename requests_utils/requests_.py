@@ -77,7 +77,7 @@ from requests import (
 )
 
 if __name__ in {'__main__', 'requests_proxy'}:
-    from requests_api_with_more_tools import (
+    from requests_utils.api_with_tools import (
         request,
         get, options, head, post, put, patch, delete,
         cget, coptions, chead, cpost, cput, cpatch, cdelete,
@@ -85,7 +85,7 @@ if __name__ in {'__main__', 'requests_proxy'}:
         aget, aoptions, ahead, apost, aput, apatch, adelete,
     )
 else:
-    from .requests_api_with_more_tools import (
+    from .api_with_tools import (
         request,
         get, options, head, post, put, patch, delete,
         cget, coptions, chead, cpost, cput, cpatch, cdelete,

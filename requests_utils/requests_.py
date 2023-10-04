@@ -76,19 +76,10 @@ from requests import (
     # warnings,
 )
 
-if __name__ in {'__main__', 'requests_proxy'}:
-    from requests_utils.api_with_tools import (
-        request,
-        get, options, head, post, put, patch, delete,
-        cget, coptions, chead, cpost, cput, cpatch, cdelete,
-        acget, acoptions, achead, acpost, acput, acpatch, acdelete,
-        aget, aoptions, ahead, apost, aput, apatch, adelete,
-    )
-else:
-    from .api_with_tools import (
-        request,
-        get, options, head, post, put, patch, delete,
-        cget, coptions, chead, cpost, cput, cpatch, cdelete,
-        acget, acoptions, achead, acpost, acput, acpatch, acdelete,
-        aget, aoptions, ahead, apost, aput, apatch, adelete,
-    )
+from .api_with_tools import (
+    request,
+    get, options, head, post, put, patch, delete,
+    cget, coptions, chead, cpost, cput, cpatch, cdelete,
+    acget, acoptions, achead, acpost, acput, acpatch, acdelete,
+    aget, aoptions, ahead, apost, aput, apatch, adelete,
+)

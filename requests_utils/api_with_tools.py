@@ -17,12 +17,8 @@ import logging
 
 from requests import sessions, exceptions
 
-if __name__ in {'__main__', 'requests_api_with_more_tools'}:
-    import response_proxy
-    from dealing_unhashable_args import freeze_dict_and_list
-else:
-    from . import response_proxy
-    from .dealing_unhashable_args import freeze_dict_and_list
+from . import response_proxy
+from .dealing_unhashable_args import freeze_dict_and_list
 
 __all__ = (
     'request',

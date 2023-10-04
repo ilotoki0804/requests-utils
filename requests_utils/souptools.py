@@ -7,18 +7,11 @@ from requests.models import Response
 from bs4 import BeautifulSoup, FeatureNotFound
 from bs4.element import Tag, ResultSet
 
-if __name__ in {"__main__", "souptools"}:
-    from exceptions import (
-        NoParserError,
-        EmptyResultError,
-    )
-    from broadcast_list import TagBroadcastList
-else:
-    from .exceptions import (
-        NoParserError,
-        EmptyResultError,
-    )
-    from .broadcast_list import TagBroadcastList
+from .exceptions import (
+    NoParserError,
+    EmptyResultError,
+)
+from .broadcast_list import TagBroadcastList
 
 
 __all__ = (

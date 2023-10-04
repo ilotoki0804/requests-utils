@@ -1,9 +1,5 @@
-if __name__ in {"__main__", "__init__"}:
-    import requests_ as requests
-    from custom_defaults import CustomDefaults
-else:
-    from . import requests_ as requests
-    from .custom_defaults import CustomDefaults
+from . import requests_ as requests
+from .custom_defaults import CustomDefaults
 
 __title__ = "requests_utils"
 __description__ = 'Various convenient features about requests.'

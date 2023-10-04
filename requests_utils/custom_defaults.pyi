@@ -1,7 +1,4 @@
-if __name__ in {'__main__', 'my_defaults'}:
-    import requests_utils.api_with_tools as api_with_tools
-else:
-    from . import api_with_tools
+from . import api_with_tools
 
 
 class CustomDefaults:

@@ -239,21 +239,21 @@ def delete(url, **kwargs):
 
 
 @freeze_dict_and_list()
-@lru_cache()
+@lru_cache
 def cget(url, params=None, **kwargs):
     "cached requests.get"
     return get(url, params=params, **kwargs)
 
 
 @freeze_dict_and_list()
-@lru_cache()
+@lru_cache
 def coptions(url, **kwargs):
     "cached requests.options"
     return options(url, **kwargs)
 
 
 @freeze_dict_and_list()
-@lru_cache()
+@lru_cache
 def chead(url, **kwargs):
     "cached requests.head"
     kwargs.setdefault("allow_redirects", False)
@@ -261,28 +261,28 @@ def chead(url, **kwargs):
 
 
 @freeze_dict_and_list()
-@lru_cache()
+@lru_cache
 def cpost(url, data=None, json=None, **kwargs):
     "cached requests.post"
     return post(url, data=data, json=json, **kwargs)
 
 
 @freeze_dict_and_list()
-@lru_cache()
+@lru_cache
 def cput(url, data=None, **kwargs):
     "cached requests.put"
     return put(url, data=data, **kwargs)
 
 
 @freeze_dict_and_list()
-@lru_cache()
+@lru_cache
 def cpatch(url, data=None, **kwargs):
     "cached requests.patch"
     return patch(url, data=data, **kwargs)
 
 
 @freeze_dict_and_list()
-@lru_cache()
+@lru_cache
 def cdelete(url, **kwargs):
     "cached requests.delete"
     return delete(url, **kwargs)

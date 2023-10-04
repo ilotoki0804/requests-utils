@@ -12,13 +12,13 @@ if __name__ in {"__main__", "souptools"}:
         NoParserError,
         EmptyResultError,
     )
-    # from broadcast_list import TagBroadcastList
+    from broadcast_list import TagBroadcastList
 else:
     from .exceptions import (
         NoParserError,
         EmptyResultError,
     )
-    # from .broadcast_list import TagBroadcastList
+    from .broadcast_list import TagBroadcastList
 
 
 __all__ = (
@@ -79,37 +79,37 @@ def soup(
         )
 
 
-# @overload
-# def soup_select(
-#     markup_or_response: str | Response,
-#     selector: str,
-#     no_empty_result: bool = False,
-#     parser: Parsers | None = None,
-#     use_broadcast_list: Literal[True] = ...,
-# ) -> TagBroadcastList:
-#     ...
+@overload
+def soup_select(
+    markup_or_response: str | Response,
+    selector: str,
+    no_empty_result: bool = False,
+    parser: Parsers | None = None,
+    use_broadcast_list: Literal[True] = ...,
+) -> TagBroadcastList:
+    ...
 
 
-# @overload
-# def soup_select(
-#     markup_or_response: str | Response,
-#     selector: str,
-#     no_empty_result: bool = False,
-#     parser: Parsers | None = None,
-#     use_broadcast_list: Literal[False] = ...,
-# ) -> ResultSet[Tag]:
-#     ...
+@overload
+def soup_select(
+    markup_or_response: str | Response,
+    selector: str,
+    no_empty_result: bool = False,
+    parser: Parsers | None = None,
+    use_broadcast_list: Literal[False] = ...,
+) -> ResultSet[Tag]:
+    ...
 
 
-# @overload
-# def soup_select(
-#     markup_or_response: str | Response,
-#     selector: str,
-#     no_empty_result: bool = False,
-#     parser: Parsers | None = None,
-#     use_broadcast_list: bool = True,
-# ) -> ResultSet[Tag] | TagBroadcastList:
-#     ...
+@overload
+def soup_select(
+    markup_or_response: str | Response,
+    selector: str,
+    no_empty_result: bool = False,
+    parser: Parsers | None = None,
+    use_broadcast_list: bool = True,
+) -> ResultSet[Tag] | TagBroadcastList:
+    ...
 
 
 def soup_select(
@@ -117,8 +117,8 @@ def soup_select(
     selector: str,
     no_empty_result: bool = False,
     parser: Parsers | None = None,
-    # use_broadcast_list: bool = True,
-) -> ResultSet[Tag]:
+    use_broadcast_list: bool = True,
+) -> ResultSet[Tag] | TagBroadcastList:
     """response.soup(parser, **kwargs).select(selector)와 거의 같습니다만 no_empty_result라는 강력한 추가 기능을 제공합니다.
 
     Args:
@@ -149,7 +149,7 @@ def soup_select(
             selector=selector,
         )
 
-    return selected
+    return TagBroadcastList(selected) if use_broadcast_list else selected
 
 
 @overload
@@ -236,44 +236,44 @@ def xml(markup_or_response: str | Response) -> BeautifulSoup:
     return soup(markup_or_response, parser='xml')
 
 
-# @overload
-# def xml_select(
-#     markup_or_response: str | Response,
-#     selector: str,
-#     no_empty_result: bool = False,
-#     use_broadcast_list: Literal[True] = ...,
-# ) -> TagBroadcastList:
-#     ...
+@overload
+def xml_select(
+    markup_or_response: str | Response,
+    selector: str,
+    no_empty_result: bool = False,
+    use_broadcast_list: Literal[True] = ...,
+) -> TagBroadcastList:
+    ...
 
 
-# @overload
-# def xml_select(
-#     markup_or_response: str | Response,
-#     selector: str,
-#     no_empty_result: bool = False,
-#     use_broadcast_list: Literal[False] = ...,
-# ) -> ResultSet[Tag]:
-#     ...
+@overload
+def xml_select(
+    markup_or_response: str | Response,
+    selector: str,
+    no_empty_result: bool = False,
+    use_broadcast_list: Literal[False] = ...,
+) -> ResultSet[Tag]:
+    ...
 
 
-# @overload
-# def xml_select(
-#     markup_or_response: str | Response,
-#     selector: str,
-#     no_empty_result: bool = False,
-#     use_broadcast_list: bool = True,
-# ) -> ResultSet[Tag] | TagBroadcastList:
-#     ...
+@overload
+def xml_select(
+    markup_or_response: str | Response,
+    selector: str,
+    no_empty_result: bool = False,
+    use_broadcast_list: bool = True,
+) -> ResultSet[Tag] | TagBroadcastList:
+    ...
 
 
 def xml_select(
     markup_or_response: str | Response,
     selector: str,
     no_empty_result: bool = False,
-    # use_broadcast_list: bool = True,
-) -> ResultSet[Tag]:
+    use_broadcast_list: bool = True,
+) -> ResultSet[Tag] | TagBroadcastList:
     """parser가 xml인 .soup_select()입니다. 자세한 내용은 .soup_select()의 docstring을 확인하세요."""
-    return soup_select(markup_or_response, selector, no_empty_result, 'xml')
+    return soup_select(markup_or_response, selector, no_empty_result, 'xml', use_broadcast_list)
 
 
 @overload

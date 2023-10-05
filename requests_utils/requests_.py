@@ -18,7 +18,7 @@ from requests import (
     RequestException,
     # RequestsDependencyWarning,
     Response,
-    Session,
+    # # Session,
     Timeout,
     TooManyRedirects,
     URLRequired,
@@ -66,9 +66,9 @@ from requests import (
     # # post,
     # # put,
     # # request,
-    session,
+    # session,
     sessions,
-    # ssl,
+    # # ssl,
     status_codes,
     structures,
     # urllib3,
@@ -83,3 +83,11 @@ from .api_with_tools import (
     acget, acoptions, achead, acpost, acput, acpatch, acdelete,
     aget, aoptions, ahead, apost, aput, apatch, adelete,
 )
+from .sessions_with_tools import Session
+
+
+class session(Session):
+    def __init__(self) -> None:
+        import warnings
+        warnings.warn('This class is deprecated. Use `Session`(Capitalized) instead.', DeprecationWarning)
+        super().__init__()

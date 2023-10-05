@@ -31,11 +31,19 @@ requests와 bs4는 같이 설치되지만 BeatifulSoup의 추가적인 parser인
 from requests_utils import requests
 ```
 
-이 라이브러리는 requests 라이브러리와 99% 호환되며, 그 위에 편리한 기능을 얹은 형태입니다. 즉, 기존 `import requests`를 위의 코드로 교체하면 절대 호환성 오류가 나지 않습니다.
+이 라이브러리는 requests 라이브러리와 99% 호환되며 (심지어 타입 힌트도 requests 라이브러리와 같이 잘 작동합니다!), 그 위에 편리한 기능을 얹은 형태입니다. 즉, 기존 `import requests`를 위의 코드로 교체하면 절대 호환성 오류가 나지 않습니다.
 
 이 모듈은 `requests` 라이브러리를 호환성 있게 대체하는 목적이 가지고 있습니다. 따라서 기존 코드에서 `requests`를 import하는 부분을 위의 코드로 변경하여도 깨지는 경우가 거의 발생하지 않습니다. 호환되지 않는 경우를 알고 싶다면 `requests 모듈과 호환되지 않는 부분` 파트를 참고하세요.
 
 참고: 예시들의 경우 거의 `get` 요청을 위주로 설명하지만, 다른 모든 메소드(options/head/post/put/patch/delete)에서도 동일하게 작동합니다.
+
+requests의 Session도 비슷하게 사용할 수 있습니다
+```python
+from requests_utils import requests
+
+with requests.Session() as session:
+    ...  # cget, attempts 등 모든 기능 사용 가능
+```
 
 ### 기본값
 
@@ -646,6 +654,9 @@ AttributeError: ResultSet object has no attribute 'text'. You're probably treati
 ``` -->
 
 ## CustomDefaults
+> [!WARNING]
+> 대부분의 경우에서는 requests_utils.requests.Session을 사용하는 것이 낫습니다. requests.Session에서도 cget이나 attempts 등의 기능을 사용할 수 있습니다.
+
 `CustomDefaults`를 통해 직접 기본값을 설정할 수 있습니다. 이 값으로 일반 get/options/head/post/put/patch/delete 및 c../a../ac.. 함수의 기본값을 효과적으로 설정할 수 있습니다.
 
 ```python
@@ -668,9 +679,11 @@ Some part of this program contains code from [typeshed](https://github.com/pytho
 
 # Relese Note
 
+2.3.0 (2023-10-05): BroadcastList 복원, sessions_with_tools 추가
+
 0.2.3 (2023-09-19): header 기본값 변경, ConnectionError시 에러 한 개만 보이는 것으로 변경, attempts로 재시도할 때 성공했을 때 메시지 추가, retry에서 url 제거, setup.py와 관련 파일 변경
 
-0.2.2 (2023-09-08): attempt parameter를 attempts로 변경, TagBroadcastList 제거
+0.2.2 (2023-09-08): attempt parameter를 attempts로 변경, BroadcastList 제거
 
 0.2.1 (2023-08-31): py.typed 추가, freeze_dict_and_list 추가
 

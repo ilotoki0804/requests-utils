@@ -1,6 +1,6 @@
 # sourcery skip
 if __name__ == "__main__":
-    import test
+    import tests
 else:
     from . import test
 

@@ -308,6 +308,9 @@ def crequest(
     cert: _Cert | None = ...,
     json: Incomplete | None = ...,
 ) -> ResponseProxy: ...
+
+# CACHED REQUESTS
+
 def cget(
     url: str | bytes,
     params: _Params | None = None,

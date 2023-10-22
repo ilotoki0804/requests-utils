@@ -22,7 +22,7 @@ class Session(RequestsSession):
         *args,
         attempts: int | None = None,
         waiting_time_reattept: int | float | None = None,
-        raise_for_status: bool = True,
+        raise_for_status: bool = False,
         **kwargs,
     ):
         """Constructs a :class:`Request <Request>`, prepares it and sends it.

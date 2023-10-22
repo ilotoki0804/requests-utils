@@ -66,7 +66,7 @@ from requests import (
     # # post,
     # # put,
     # # request,
-    # session,
+    session,
     sessions,
     # # ssl,
     status_codes,
@@ -84,10 +84,3 @@ from .api_with_tools import (
     aget, aoptions, ahead, apost, aput, apatch, adelete,
 )
 from .sessions_with_tools import Session
-
-
-class session(Session):
-    def __init__(self) -> None:
-        import warnings
-        warnings.warn('This class is deprecated. Use `Session`(Capitalized) instead.', DeprecationWarning)
-        super().__init__()

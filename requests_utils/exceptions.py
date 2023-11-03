@@ -14,7 +14,7 @@ class EmptyResultError(Exception):
             'Check if both selector and URL are valid. '
             'Set to False `no_empty_result` if empty list is intended. '
             'It may also because of selector is not matched with URL.\n'
-            f'selector: {selector}, URL: {url}'
+            f'selector: {selector!r}, URL: {url}'
         )
 
         if str(status_code)[0] in {'4', '5'}:

@@ -6,14 +6,15 @@
 또한 `no_empty_result`는 BeatifulSoup에는 없는 독자적인 기능으로 typing 경고나 오류 가능성을 줄입니다.
 소소하지만 유용하며, 서너 줄의 코드 작성량을 줄여주는 라이브러리입니다.
 
-# 시작하기
+## 시작하기
 
 1. 파이썬을 설치합니다.
-2. 터미널에서 다음과 같은 명령어를 실행합니다.
+1. 터미널에서 다음과 같은 명령어를 실행합니다.
 
-   ```
+   ```console
    pip install -U requests-utils
    ```
+
    **`requests-util`가 _아니니_ 주의하세요! `s`를 꼭 붙여야 합니다!**
 
 requests와 bs4는 같이 설치되지만 BeatifulSoup의 추가적인 parser인 lxml와 html5lib는 기본으로 제공하지 않습니다.
@@ -21,9 +22,9 @@ requests와 bs4는 같이 설치되지만 BeatifulSoup의 추가적인 parser인
 따라서 lxml, html5lib 등은 스스로 설치하셔야 오류가 나지 않을 수 있습니다.
 만약 설치되지 않은 상태로 해당 parser를 이용한다면 `NoParserError`가 납니다.
 
-# 사용법
+## 사용법
 
-## `requests_utils.requests` 모듈
+### `requests_utils.requests` 모듈
 
 `requests_utils.requests` 모듈은 다음과 같이 import해 사용할 수 있습니다.
 
@@ -38,6 +39,7 @@ from requests_utils import requests
 참고: 예시들의 경우 거의 `get` 요청을 위주로 설명하지만, 다른 모든 메소드(options/head/post/put/patch/delete)에서도 동일하게 작동합니다.
 
 requests의 Session도 비슷하게 사용할 수 있습니다
+
 ```python
 from requests_utils import requests
 
@@ -45,13 +47,13 @@ with requests.Session() as session:
     ...  # cget, attempts 등 모든 기능 사용 가능
 ```
 
-### 기본값
+#### 기본값
 
 기본값들은 각각 적당한 값으로 설정되어 있습니다.
 
 기본값들은 다음과 같고 request.get/options/head/post/put/patch/delete에서 적용됩니다.
 
-```
+```python
 timeout 기본값: 40
 headers 기본값: {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
@@ -92,7 +94,7 @@ attempts 기본값: 1
  'X-Amzn-Trace-Id': ...}
 ```
 
-### 응답
+#### 응답
 
 `requests_utils.requests` 모듈의 get/options/head/post/put/patch/delete 함수는 모두 ResponseProxy를 리턴합니다.
 
@@ -100,11 +102,12 @@ ResponseProxy는 기존 Response와 100% 호환되는 Response의 subclass입니
 
 기능을 잘 이해하지 못했다면 기존에 Response를 사용하던 방식대로 사용하시면 문제 없이 작동합니다.
 
-### attempts
+#### attempts
 
 `attempts`는 파라미터로, 모종의 이유로 `ConnectionError`가 발생했을 때 같은 requests를 몇 번 더 반복할 것인지 설정하는 파라미터입니다.
 
 만약 10번을 실행하고도 실패했다면 가장 최근에 실패한 연결의 이유를 보여줍니다.
+
 ```python
 >>> from requests_utils import requests
 >>>
@@ -149,11 +152,12 @@ ConnectionError: Trying 10 times but failed to get data.
 URL: https://some-not-working-website.com
 ```
 
-### 일반 요청 함수
+#### 일반 요청 함수
 
 일반 requests.get/options/head/post/put/patch/delete를 `requests`에서 사용하던 방식 그대로 사용할 수 있습니다.
 
 다음은 requests.get과 post의 예시입니다. `requests`모듈과 똑같이 작동합니다.
+
 ```python
 >>> from requests_utils import requests
 >>>
@@ -167,7 +171,7 @@ URL: https://some-not-working-website.com
 {'title': 'foo', 'body': 'bar', 'userId': 1, 'id': 201}  # Same with original requests library
 ```
 
-### 캐시된 요청 함수
+#### 캐시된 요청 함수
 
 일반 requests.get/../delete 요청과 동일하지만 캐시됩니다. 이때 캐시는 후술할 `비동기적이며 캐시된 요청 함수`와 공유됩니다. 하지만 각 메소드들끼리 공유되지는 않습니다. 앞에 `c`를 붙여 requests.cget/coptions/chead/cpost/cput/cpatch/cdelete로 함수를 작성해 사용할 수 있습니다.
 
@@ -183,7 +187,7 @@ URL: https://some-not-working-website.com
 0.10267569999268744 # : 처음 한 번만 request를 보내고 그 뒤는 캐시에서 값을 불러옴
 ```
 
-### 비동기적인 요청 함수
+#### 비동기적인 요청 함수
 
 비동기적인 요청을 보냅니다. 앞에 `a`를 붙여 requests.aget/aoptions/ahead/apost/aput/apatch/adelete로 함수를 작성합니다.
 
@@ -199,7 +203,7 @@ URL: https://some-not-working-website.com
 <response [200]>
 ```
 
-### 비동기적이며 캐시된 요청 함수
+#### 비동기적이며 캐시된 요청 함수
 
 비동기적이며 캐시되는 요청입니다. 이때 캐시는 같은 메소드라면 `캐시된 요청 함수`와 공유됩니다. 앞에 `ac`를 붙여 requests.acget/acoptions/achead/acpost/acput/acpatch/acdelete로 함수를 작성합니다.
 
@@ -217,7 +221,7 @@ URL: https://some-not-working-website.com
 0.11984489997848868 # 처음 한 번만 request를 보내고 그 뒤는 캐시를 불러옴
 ```
 
-### `run_in_executer` 사용
+#### `run_in_executer` 사용
 
 비동기적인 요청(aget, acget 등 a가 붙은 메소드)에서는 `run_in_executer` parameter를 사용할 수 있습니다. 이 parameter는 함수가 다른 쓰레드에서 돌게 합니다. 순차적으로 프로그램이 동작할 때에는 큰 차이가 없지만 병렬적으로 프로그램을 돌릴 때 큰 속도 향상을 기대할 수 있습니다.
 
@@ -257,11 +261,11 @@ if __name__ == '__main__':
     asyncio.run(main())
 ```
 
-### requests 모듈과 호환되지 않는 부분
+#### requests 모듈과 호환되지 않는 부분
 
 이 모듈은 `requests` 라이브러리와 거의 모든 부분에서 호환되지만 호환되지 않는 부분이 몇 가지 있습니다.
 
-#### dunder method(`__dunder__`)
+##### dunder method(`__dunder__`)
 
 잠정적 버그의 이유가 될 수 있다는 이유 혹은 기술적인 이유로 일부 dunder method는 불러와지지 않거나 호환되지 않습니다.
 
@@ -287,7 +291,7 @@ AttributeError: module 'requests_utils.requests_' has no attribute '__path__'
 '✨ 🍰 ✨'
 ```
 
-#### import
+##### import
 
 `requests_utils.requests`는 거의 모든 경우에서 import 관련 호환성이 유지됩니다. 하지만 import와 관련해서는 몇 가지 규칙이 존재합니다.
 
@@ -302,6 +306,7 @@ from requests_utils import requests  # 가능
 ```
 
 따라서 다음과 같은 경우는 `requests_utils.requests`에서 import가 불가능합니다.
+
 ```python
 # requests의 하위 모듈 import
 import requests.models  # 가능
@@ -319,6 +324,7 @@ from requests_utils.requests.models import Response  # 불가능!
 이런 경우엔 모듈 import를 이용하면 해결됩니다..
 
 예를 들어 다음과 같은 코드가 있다고 해 봅시다.
+
 ```python
 from request.models import Response  # 하위 모듈의 하위 구성 요소 import 사용
 
@@ -327,6 +333,7 @@ def is_response(instance):
 ```
 
 이 코드는 다음과 같이 문제를 해결할 수 있습니다.
+
 ```python
 # requests.models.Response로 바꾸기.
 # 장점: 깔끔하고 error-prone하지 않음.
@@ -334,6 +341,7 @@ from requests_utils import requests  # requests 모듈 import
 def is_response(instance):
     return isinstance(instance, requests.models.Response)  # requests.models.Response로 변경함
 ```
+
 ```python
 # Response 정의하기.
 # 장점: 코드를 수정할 필요가 없음.
@@ -346,11 +354,11 @@ def is_response(instance):
 
 개인의 선호에 따라 원하는 방식으로 사용하시면 됩니다.
 
-## ResponseProxy
+### ResponseProxy
 
 `ResponseProxy`는 이 라이브러리에서 requests.get/options/head/post/put/patch/delete를 사용할 경우의 리턴값입니다. 기존 Response와 100% 호환되면서도 추가적인 함수 6개를 제공합니다.
 
-### 호환성
+#### 호환성
 
 이 파트에서는 주석에 내용을 적었습니다.
 
@@ -406,7 +414,7 @@ True
 False
 ```
 
-### 기본 구조
+#### 기본 구조
 
 `ResponseProxy`에는 여러 모듈들이 있으며, 크게 세 가지 종류로 분류됩니다.
 
@@ -423,12 +431,7 @@ False
 
 자세한 내용은 아래를 살펴보세요.
 
-### 기본값
-```
-parser
-    기본으로 설정된 값: 'html.parser'
-```
-### `.soup()`
+#### `.soup()`
 
 `.soup()`는 텍스트나 response를 받아 `BeatifulSoup`로 내보냅니다.
 
@@ -463,7 +466,7 @@ parser
 
 parser가 없을 경우 `BeatifulSoup`는 `FeatureNotFound`에러가 나오지만 `.soup()`는 `NoParserError`가 나옵니다.
 
-### `.soup_select()`
+#### `.soup_select()`
 
 `.soup_select()`는 텍스트나 response를 받아 BeatifulSoup의 Tag로 내보냅니다. `selector` parameter는 CSS 선택자를 받습니다.
 
@@ -512,7 +515,7 @@ selector: data-some-complex-and-error-prone-selector, URL: https://www.python.or
 
 <!-- 이 함수를 기본적으로 BroadcastList를 출력값으로 설정하고 있습니다. BroadcastList에 대해 자세히 알고 싶다면 아래의 `BroadcastList` 항목을 확인해 보세요. -->
 
-### `.soup_select_one()`
+#### `.soup_select_one()`
 
 `.soup_select_one()`는 텍스트나 response를 받아 BeatifulSoup의 Tag로 내보냅니다. `selector` parameter는 CSS 선택자를 받습니다.
 
@@ -538,6 +541,7 @@ selector: data-some-complex-and-error-prone-selector, URL: https://www.python.or
 >>> soup
 <strong>Notice:</strong>
 ```
+
 `no_empty_result` parameter가 True이면 .select_one()의 결과가 None일때 `EmptyResultError`를 냅니다.
 
 이 기능은 타입 힌트에서도 유용하게 쓰일 수 있고, 오류를 더 명확히 하는 데에도 도움을 줍니다.
@@ -568,7 +572,7 @@ requests_utils.exceptions.EmptyResultError: Result of select_one is None. This e
 selector: data-some-complex-and-error-prone-selector, URL: https://www.python.org/
 ```
 
-### xml 관련 함수
+#### xml 관련 함수
 
 `ResponseProxy`의 `soup` 관련 함수에서 `soup`를 `xml`로 치환하면 xml 함수가 됩니다.
 
@@ -653,7 +657,8 @@ Traceback (most recent call last):
 AttributeError: ResultSet object has no attribute 'text'. You're probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?
 ``` -->
 
-## CustomDefaults
+### CustomDefaults
+
 > [!WARNING]
 > 대부분의 경우에서는 requests_utils.requests.Session을 사용하는 것이 낫습니다. requests.Session에서도 cget이나 attempts 등의 기능을 사용할 수 있습니다.
 
@@ -667,7 +672,7 @@ AttributeError: ResultSet object has no attribute 'text'. You're probably treati
 'Hello, World!'
 ```
 
-# 라이선스 정보
+## 라이선스 정보
 
 이 프로그램은 MIT 라이선스로 공유됩니다.
 
@@ -677,7 +682,7 @@ Some part of this program contains code from [requests](https://github.com/psf/r
 이 프로그램의 일부는 [typeshed(Apache License 2.0 or MIT License)](https://github.com/python/typeshed) 라이브러리에 있던 코드를 포함합니다.
 Some part of this program contains code from [typeshed](https://github.com/python/typeshed) library.
 
-# Relese Note
+## Relese Note
 
 2.3.0 (2023-10-05): BroadcastList 복원, sessions_with_tools 추가
 

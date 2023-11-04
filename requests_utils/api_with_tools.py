@@ -1,3 +1,4 @@
+# TODO: raise_for_status 추가
 """
 requests_plus.requests_api_with_more_tools
 ~~~~~~~~~~~~
@@ -14,12 +15,14 @@ from functools import lru_cache
 import asyncio
 import logging
 # from typing import Literal, Any, TypedDict
+from urllib import parse
 
 from requests import sessions, exceptions
 
-from . import response_proxy
+from .response_proxy import ResponseProxy
 from .dealing_unhashable_args import freeze_dict_and_list
 from .contants import DEFAULT_HEADERS
+from .avoid_sslerror import make_session_sslerror_free
 
 __all__ = (
     'request',
@@ -30,11 +33,19 @@ __all__ = (
 )
 
 
-def request(method, url, **kwargs):
+def request(
+    method,
+    url,
+    attempts: int | None = None,
+    avoid_sslerror: bool | None = None,
+    raise_for_status: bool | None = None,
+    **kwargs
+):
     """기본값, 재시도 횟수 등 추가 기능이 들어간 requests_plus 버전의 requests.request 구현입니다.
 
     ## 추가된 기능
-    만약 명시하지 않았다면 기본값이 적용됩니다. timeout의 기본값은 100, headers의 기본값은 간단한 user agent, attempts의 기본값은 1입니다.
+    만약 명시하지 않았다면 기본값이 적용됩니다. timeout의 기본값은 120, headers의 기본값은 간단한 user agent, attempts의 기본값은 1,
+    avoid_sslerror은 False, raise_for_status는 False입니다.
 
     ## 기존 requests 라이브러리에는 없는 parameter
     :param attempts: (optional) request가 ConnectionError를 받았을 때 같은 요청을 몇 번 다시 실행할 것인지를 정합니다.
@@ -79,40 +90,31 @@ def request(method, url, **kwargs):
       <Response [200]>
     """
 
-    # By using the 'with' statement we are sure the session is closed, thus we
-    # avoid leaving sockets open which can trigger a ResourceWarning in some
-    # cases, and look like a memory leak in others.
-    def send_request():
-        with sessions.Session() as session:
-            return session.request(method=method, url=url, **kwargs)
-
-    # kwargs.setdefault('headers', {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-    #                               '(KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'})
-
     kwargs.setdefault('headers', DEFAULT_HEADERS)
-
-    kwargs.setdefault('timeout', 40)
-
-    if 'attempts' not in kwargs:
-        attempts = 1
-    else:
-        attempts = kwargs['attempts']
-        del kwargs['attempts']
+    kwargs.setdefault('timeout', 120)
+    raise_for_status = False if raise_for_status is None else raise_for_status
+    attempts = 1 if attempts is None else attempts
+    avoid_sslerror = False if avoid_sslerror is None else avoid_sslerror
 
     last_exception = None
-    if attempts > 1:
-        for _ in range(attempts):
-            try:
-                response = response_proxy.ResponseProxy(send_request())
-            except exceptions.ConnectionError as e:
-                logging.warning('Retring...')
-                last_exception = e
-            else:
-                if last_exception is not None:
-                    logging.warning(f'Sucessfully retried from {url}')
-                return response
-    else:
-        return response_proxy.ResponseProxy(send_request())
+    for _ in range(attempts):
+        try:
+            with sessions.Session() as session:
+                if avoid_sslerror:
+                    prefix = parse.urlparse(url).scheme + '://'
+                    make_session_sslerror_free(session, prefix=prefix)
+                response = ResponseProxy(session.request(method=method, url=url, **kwargs))
+                if raise_for_status:
+                    response.raise_for_status()
+        except exceptions.ConnectionError as e:
+            if attempts == 1:
+                raise
+            logging.warning('Retring...')
+            last_exception = e
+        else:
+            if last_exception is not None:
+                logging.warning(f'Sucessfully retried from {url}')
+            return response
 
     raise ConnectionError(f'Trying {attempts} times but failed to get data.\nURL: {url}') from last_exception
 

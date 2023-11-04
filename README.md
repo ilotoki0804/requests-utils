@@ -705,6 +705,8 @@ Some part of this program contains code from [typeshed](https://github.com/pytho
 
 ## Relese Note
 
+0.4.1 (2023-11-4): 긴급 버그 수정
+
 0.4.0 (2023-11-4): raise_for_status 기본값 변경, souptoolsclass 추가, avoid_sslerror 추가
 
 0.3.0 (2023-10-05): BroadcastList 복원, sessions_with_tools 추가

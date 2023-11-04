@@ -54,7 +54,7 @@ with requests.Session() as session:
 기본값들은 다음과 같고 request.get/options/head/post/put/patch/delete에서 적용됩니다.
 
 ```python
-timeout 기본값: 40
+timeout 기본값: 120
 headers 기본값: {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     "Accept-Encoding": "gzip, deflate, br",
@@ -70,6 +70,7 @@ headers 기본값: {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
 }
 attempts 기본값: 1
+avoid_sslerror 기본값: False
 ```
 
 ```python
@@ -150,6 +151,27 @@ Traceback (most recent call last):
 ...
 ConnectionError: Trying 10 times but failed to get data.
 URL: https://some-not-working-website.com
+```
+
+### avoid_sslerror
+
+`avoid_sslerror`는 `UNSAFE_LEGACY_RENEGOTIATION_DISABLED`으로 인해 오류가 나타나는 사이트에서 사용할 수 있습니다.
+
+예를 들어 다음의 사이트는 `avoid_sslerror` 없이는 다음과 같은 오류를 일으킵니다.
+
+```python
+>>> from requests_utils import requests
+>>> requests.get('https://bufftoon.plaync.com')
+---------------------------------------------------------------------------
+SSLError                                  Traceback (most recent call last)
+...
+SSLError: HTTPSConnectionPool(host='bufftoon.plaync.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLError(1, '[SSL: UNSAFE_LEGACY_RENEGOTIATION_DISABLED] unsafe legacy renegotiation disabled (_ssl.c:1000)')))
+```
+
+`avoid_sslerror`를 `True`로 하면 해당 오류를 피할 수 있습니다.
+
+```python
+<Response [200]>
 ```
 
 #### 일반 요청 함수
@@ -513,7 +535,7 @@ requests_utils.exceptions.EmptyResultError: Result of select is empty list("[]")
 selector: data-some-complex-and-error-prone-selector, URL: https://www.python.org/
 ```
 
-<!-- 이 함수를 기본적으로 BroadcastList를 출력값으로 설정하고 있습니다. BroadcastList에 대해 자세히 알고 싶다면 아래의 `BroadcastList` 항목을 확인해 보세요. -->
+이 함수를 기본적으로 BroadcastList를 출력값으로 설정하고 있습니다. BroadcastList에 대해 자세히 알고 싶다면 아래의 `BroadcastList` 항목을 확인해 보세요.
 
 #### `.soup_select_one()`
 
@@ -603,11 +625,12 @@ selector: data-some-complex-and-error-prone-selector, URL: https://www.python.or
 [<LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Sunny</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Sunny</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Sunny</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Sunny</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Sun or Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Sun</LIGHT>, <LIGHT>Mostly Shady</LIGHT>, <LIGHT>Shade</LIGHT>, <LIGHT>Shade</LIGHT>]
 ```
 
-<!-- ### BroadcastList
+#### BroadcastList
 
-`.soup_select()`와 `.xml_select()`의 경우에는 리스트(와 비슷한 것)를 값으로 내보냅니다. 이는 `.soup()`나 `.soup_select_one()`에서 기대할 수 있는 `.text`와 같은 파라미터 사용을 어렵게 합니다.
+`.soup_select()`와 `.xml_select()`의 경우에는 리스트를 값으로 내보냅니다. 이는 `.soup()`나 `.soup_select_one()`에서 기대할 수 있는 `.text`와 같은 파라미터 사용을 어렵게 합니다.
 
 이는 for loop나 리스트 컴프리헨션으로 해결할 수 있습니다.
+
 ```python
 >>> from requests_utils import requests
 >>> tags_list = requests.get("https://python.org").soup_select("p strong")
@@ -642,7 +665,8 @@ Traceback (most recent call last):
 AttributeError: ResultSet object has no attribute 'text'. You're probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?
 ```
 
-만약 BroadcastList를 사용하는 것이 싫다면 우선은 그냥 사용하지 않는 것을 권하고, 그래도 직접 끄고 싶다면 끄거나 기본값을 변경할 수 있습니다.
+만약 BroadcastList는 다음과 같이 끌 수 있습니다.
+
 ```python
 >>> from requests_utils import requests
 >>>
@@ -655,12 +679,9 @@ Traceback (most recent call last):
   File "...element.py", line 2428, in __getattr__
     raise AttributeError(
 AttributeError: ResultSet object has no attribute 'text'. You're probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?
-``` -->
+```
 
 ### CustomDefaults
-
-> [!WARNING]
-> 대부분의 경우에서는 requests_utils.requests.Session을 사용하는 것이 낫습니다. requests.Session에서도 cget이나 attempts 등의 기능을 사용할 수 있습니다.
 
 `CustomDefaults`를 통해 직접 기본값을 설정할 수 있습니다. 이 값으로 일반 get/options/head/post/put/patch/delete 및 c../a../ac.. 함수의 기본값을 효과적으로 설정할 수 있습니다.
 
@@ -684,7 +705,9 @@ Some part of this program contains code from [typeshed](https://github.com/pytho
 
 ## Relese Note
 
-2.3.0 (2023-10-05): BroadcastList 복원, sessions_with_tools 추가
+0.4.0 (2023-11-4): raise_for_status 기본값 변경, souptoolsclass 추가, avoid_sslerror 추가
+
+0.3.0 (2023-10-05): BroadcastList 복원, sessions_with_tools 추가
 
 0.2.3 (2023-09-19): header 기본값 변경, ConnectionError시 에러 한 개만 보이는 것으로 변경, attempts로 재시도할 때 성공했을 때 메시지 추가, retry에서 url 제거, setup.py와 관련 파일 변경
 

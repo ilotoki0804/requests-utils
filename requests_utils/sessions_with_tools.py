@@ -13,10 +13,6 @@ from .contants import DEFAULT_HEADERS
 
 
 class Session(RequestsSession):
-    # def __init__(self):
-    #     super().__init__()
-    #     self._caches = {}
-
     def request(
         self,
         *args,

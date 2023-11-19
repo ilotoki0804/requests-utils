@@ -1,0 +1,11 @@
+[run]
+omit =
+    requests_utils/souptools.py
+    requests_utils/api_with_tools.py
+    requests_utils/sessions_with_tools.py
+
+[report]
+exclude_lines = 
+    pragma: not covered
+    @overload
+    @abstractmethod

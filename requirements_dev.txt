@@ -1,0 +1,6 @@
+pytest
+pytest_cov
+setuptools
+wheel
+html5lib
+lxml

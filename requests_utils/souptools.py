@@ -1,6 +1,7 @@
 """Replacement of BeatifulSoup."""
 
 from __future__ import annotations
+import warnings
 
 from typing import overload, Literal
 from requests.models import Response
@@ -12,6 +13,8 @@ from .exceptions import (
     EmptyResultError,
 )
 from .broadcast_list import TagBroadcastList
+
+warnings.warn("`souptools` module is deprecated. Use souptoolsclass instead.", DeprecationWarning)
 
 
 __all__ = (

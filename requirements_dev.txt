@@ -4,3 +4,4 @@ setuptools
 wheel
 html5lib
 lxml
+poetry

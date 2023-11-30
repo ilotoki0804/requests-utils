@@ -6,11 +6,11 @@
 ██║░░██║███████╗░╚═██╔═╝░╚██████╔╝███████╗██████╔╝░░░██║░░░██████╔╝░░░░░░╚██████╔╝░░░██║░░░██║███████╗██████╔╝
 ╚═╝░░╚═╝╚══════╝░░░╚═╝░░░░╚═════╝░╚══════╝╚═════╝░░░░╚═╝░░░╚═════╝░░░░░░░░╚═════╝░░░░╚═╝░░░╚═╝╚══════╝╚═════╝░
 
-Various convenient features about requests.
+Various convenient features related to requests.
 """
 
 __title__ = "requests_utils"
-__description__ = 'Various convenient features about requests.'
+__description__ = 'Various convenient features related to requests.'
 __url__ = "https://github.com/ilotoki0804/requests-utils"
 __raw_source_url__ = "https://raw.githubusercontent.com/ilotoki0804/requests-utils/master"
 __version_info__ = (0, 4, 1)

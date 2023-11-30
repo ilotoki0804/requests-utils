@@ -667,7 +667,7 @@ Traceback (most recent call last):
 AttributeError: ResultSet object has no attribute 'text'. You're probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?
 ```
 
-만약 BroadcastList는 다음과 같이 끌 수 있습니다.
+BroadcastList는 다음과 같은 방법을 통해 끌 수 있습니다.
 
 ```python
 >>> from requests_utils import requests

@@ -1,5 +1,7 @@
 # requests-utils
 
+**Timesaver for web scraping program developers.**
+
 `requests`라이브러리와 BeatifulSoup를 합쳐 몇 줄의 코드를 하나에 합칠 수 있으며,
 간단하게 async, cache를 불러와 사용할 수 있습니다.
 
@@ -681,6 +683,38 @@ Traceback (most recent call last):
 AttributeError: ResultSet object has no attribute 'text'. You're probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?
 ```
 
+### 특별한 형태의 리스트 getitem
+
+BroadCastList에서는 다음과 같은 특이한 기능이 있습니다.
+
+만약 리스트에 정수나 슬라이스로 getitem을 요청한다면 일반적인 리스트의 역할을 수행합니다.
+
+```python
+>>> from requests_utils import requests
+>>> # 값 불러옴()
+>>> tag_broadcast_list = requests.cget("https://www.python.org/community/logos/").soup_select("img")
+>>> tag_broadcast_list
+[<img alt="Python Software Foundation" class="psf-logo" src="/static/img/psf-logo.png"/>,
+...
+<img alt="Logo device only" src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png" style="height: 48px;"/>,
+<img alt="/static/community_logos/python-powered-w-100x40.png" src="/static/community_logos/python-powered-w-100x40.png"/>,
+<img alt="/static/community_logos/python-powered-h-50x65.png" src="/static/community_logos/python-powered-h-50x65.png"/>]
+>>> # 정수 getitem
+>>> tag_broadcast_list[0]
+<img alt="Python Software Foundation" class="psf-logo" src="/static/img/psf-logo.png"/>
+>>> # 슬라이싱
+>>> tag_broadcast_list[3:5]
+[<img alt="/static/community_logos/python-powered-w-100x40.png" src="/static/community_logos/python-powered-w-100x40.png"/>,
+ <img alt="/static/community_logos/python-powered-h-50x65.png" src="/static/community_logos/python-powered-h-50x65.png"/>]
+>>> # 문자열 getitem (브로드캐스팅 적용됨!)
+>>> tag_broadcast_list["alt"]
+['Python Software Foundation',
+ 'Combined logo',
+ 'Logo device only',
+ '/static/community_logos/python-powered-w-100x40.png',
+ '/static/community_logos/python-powered-h-50x65.png']
+```
+
 ### CustomDefaults
 
 `CustomDefaults`를 통해 직접 기본값을 설정할 수 있습니다. 이 값으로 일반 get/options/head/post/put/patch/delete 및 c../a../ac.. 함수의 기본값을 효과적으로 설정할 수 있습니다.
@@ -688,9 +722,9 @@ AttributeError: ResultSet object has no attribute 'text'. You're probably treati
 ```python
 >>> from requests_utils import CustomDefaults
 >>>
->>> requests = CustomDefaults(headers={'User-Agent': 'Hello, World!'})
->>> requests.get("https://api-bdc.net/data/client-info").json()['userAgentRaw']
-'Hello, World!'
+>>> requests = CustomDefaults(headers={'User-Agent': 'User Agent for Test'})
+>>> requests.get('https://httpbin.org/headers').json()['headers']['User-Agent']
+'User Agent for Test'
 ```
 
 ## 라이선스 정보

@@ -87,9 +87,6 @@ class AbstractBroadcastList(list[T], metaclass=ABCMeta):
         if __name.startswith('E'):
             __name = __name.removeprefix('E')
 
-        if not self.value:
-            return self.value
-
         # every element contained in list are assumed to be share same type.
         if callable(getattr(self[0], __name)):
             return functools.partial(self._callable_attr_broadcast, __attr_name=__name)

@@ -1,8 +1,8 @@
 [run]
 omit =
-    requests_utils/souptools.py
-    requests_utils/api_with_tools.py
-    requests_utils/sessions_with_tools.py
+    resoup/souptools.py
+    resoup/api_with_tools.py
+    resoup/sessions_with_tools.py
 
 [report]
 exclude_lines = 

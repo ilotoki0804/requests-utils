@@ -1,5 +1,5 @@
 import pytest
-from requests_utils.header_utils import clean_headers
+from resoup.header_utils import clean_headers
 
 
 def test_clean_headers() -> None:

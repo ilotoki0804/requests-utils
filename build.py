@@ -15,4 +15,4 @@ os.system(rf'.\.venv312\Scripts\python.exe -m pip install --force-reinstall dist
 if input('Submit changes? (y or not)') in ('y', 'Y', 'ㅛ'):
     token = Path('token.txt').read_text(encoding='utf-8')
     subprocess.run(["twine", "upload", "-u", '__token__', "-p", token, "dist/*"], check=False)
-    os.system(r'.\.venv312\Scripts\python.exe -m pip show requests-utils')
+    os.system(r'.\.venv312\Scripts\python.exe -m pip show resoup')

@@ -2,9 +2,9 @@ from mailbox import NotEmptyError
 from bs4 import BeautifulSoup, Tag
 import pytest
 
-from requests_utils import requests, SoupTools
-from requests_utils.exceptions import EmptyResultError
-from requests_utils.broadcast_list import TagBroadcastList
+from resoup import requests, SoupTools
+from resoup.exceptions import EmptyResultError
+from resoup.broadcast_list import TagBroadcastList
 
 
 def test_SoupTools() -> None:

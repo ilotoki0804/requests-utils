@@ -84,7 +84,7 @@ def request(
 
     Usage::
 
-      >>> from requests_utils import requests
+      >>> from resoup import requests
       >>> req = requests.request('GET', 'https://httpbin.org/get')
       >>> req
       <Response [200]>

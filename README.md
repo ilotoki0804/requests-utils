@@ -1,4 +1,4 @@
-# requests-utils
+# resoup
 
 **Timesaver for web scraping program developers.**
 
@@ -14,10 +14,8 @@
 1. 터미널에서 다음과 같은 명령어를 실행합니다.
 
    ```console
-   pip install -U requests-utils
+   pip install -U resoup
    ```
-
-   **`requests-util`가 _아니니_ 주의하세요! `s`를 꼭 붙여야 합니다!**
 
 requests와 bs4는 같이 설치되지만 BeatifulSoup의 추가적인 parser인 lxml와 html5lib는 기본으로 제공하지 않습니다.
 
@@ -26,12 +24,12 @@ requests와 bs4는 같이 설치되지만 BeatifulSoup의 추가적인 parser인
 
 ## 사용법
 
-### `requests_utils.requests` 모듈
+### `resoup.requests` 모듈
 
-`requests_utils.requests` 모듈은 다음과 같이 import해 사용할 수 있습니다.
+`resoup.requests` 모듈은 다음과 같이 import해 사용할 수 있습니다.
 
 ```python
-from requests_utils import requests
+from resoup import requests
 ```
 
 이 라이브러리는 requests 라이브러리와 99% 호환되며 (심지어 타입 힌트도 requests 라이브러리와 같이 잘 작동합니다!), 그 위에 편리한 기능을 얹은 형태입니다. 즉, 기존 `import requests`를 위의 코드로 교체하면 절대 호환성 오류가 나지 않습니다.
@@ -43,7 +41,7 @@ from requests_utils import requests
 requests의 Session도 비슷하게 사용할 수 있습니다
 
 ```python
-from requests_utils import requests
+from resoup import requests
 
 with requests.Session() as session:
     ...  # cget, attempts 등 모든 기능 사용 가능
@@ -76,9 +74,9 @@ avoid_sslerror 기본값: False
 ```
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
->>> from requests_utils import requests
+>>> from resoup import requests
 >>> res = requests.get("https://httpbin.org/headers")
 >>> res.json()['headers']
 {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -99,7 +97,7 @@ avoid_sslerror 기본값: False
 
 #### 응답
 
-`requests_utils.requests` 모듈의 get/options/head/post/put/patch/delete 함수는 모두 ResponseProxy를 리턴합니다.
+`resoup.requests` 모듈의 get/options/head/post/put/patch/delete 함수는 모두 ResponseProxy를 리턴합니다.
 
 ResponseProxy는 기존 Response와 100% 호환되는 Response의 subclass입니다. 자세한 내용은 `ResponseProxy` 항목을 참고하세요.
 
@@ -112,7 +110,7 @@ ResponseProxy는 기존 Response와 100% 호환되는 Response의 subclass입니
 만약 10번을 실행하고도 실패했다면 가장 최근에 실패한 연결의 이유를 보여줍니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
 >>> requests.get('https://some-not-working-website.com', attempts=10)
 WARNING:root:Retring...
@@ -162,7 +160,7 @@ URL: https://some-not-working-website.com
 예를 들어 다음의 사이트는 `avoid_sslerror` 없이는 다음과 같은 오류를 일으킵니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>> requests.get('https://bufftoon.plaync.com')
 ---------------------------------------------------------------------------
 SSLError                                  Traceback (most recent call last)
@@ -183,7 +181,7 @@ SSLError: HTTPSConnectionPool(host='bufftoon.plaync.com', port=443): Max retries
 다음은 requests.get과 post의 예시입니다. `requests`모듈과 똑같이 작동합니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
 >>> requests.get('https://jsonplaceholder.typicode.com/todos/1').json()  # API that can send request in order to test. Don't execute this command unless you trust this API.
 {'userId': 1, 'id': 1, 'title': 'delectus aut autem', 'completed': False}
@@ -205,9 +203,9 @@ SSLError: HTTPSConnectionPool(host='bufftoon.plaync.com', port=443): Max retries
 >>> # 기기 사양과 인터넷 연결 품질에 따라 결과는 다를 수 있음
 >>> import timeit
 >>>
->>> timeit.timeit('requests.get("https://python.org")', number=10, setup='from requests_utils import requests')
+>>> timeit.timeit('requests.get("https://python.org")', number=10, setup='from resoup import requests')
 1.1833231999917189 # 기기 사양과 인터넷 연결 품질에 따라 다름: 10번의 연결 모두 request를 보냄
->>> timeit.timeit('requests.cget("https://python.org")', number=10, setup='from requests_utils import requests')
+>>> timeit.timeit('requests.cget("https://python.org")', number=10, setup='from resoup import requests')
 0.10267569999268744 # : 처음 한 번만 request를 보내고 그 뒤는 캐시에서 값을 불러옴
 ```
 
@@ -220,7 +218,7 @@ SSLError: HTTPSConnectionPool(host='bufftoon.plaync.com', port=443): Max retries
 ```python
 >>> import asyncio
 >>> 
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
 >>> res = asyncio.run(requests.aget('https://python.org'))
 >>> res
@@ -239,9 +237,9 @@ SSLError: HTTPSConnectionPool(host='bufftoon.plaync.com', port=443): Max retries
 >>> import asyncio
 >>> import timeit
 >>>
->>> timeit.timeit('asyncio.run(requests.aget("https://python.org"))', number=10, setup='from requests_utils import requests; import asyncio')
+>>> timeit.timeit('asyncio.run(requests.aget("https://python.org"))', number=10, setup='from resoup import requests; import asyncio')
 0.8676127000362612 # 기기 사양과 인터넷 연결 품질에 따라 다름: 10번의 연결 모두 request를 보냄
->>> timeit.timeit('asyncio.run(requests.acget("https://python.org"))', number=10, setup='from requests_utils import requests; import asyncio')
+>>> timeit.timeit('asyncio.run(requests.acget("https://python.org"))', number=10, setup='from resoup import requests; import asyncio')
 0.11984489997848868 # 처음 한 번만 request를 보내고 그 뒤는 캐시를 불러옴
 ```
 
@@ -255,7 +253,7 @@ SSLError: HTTPSConnectionPool(host='bufftoon.plaync.com', port=443): Max retries
 import asyncio
 import time
 
-from requests_utils import requests
+from resoup import requests
 
 async def masure_coroutine_time(coroutine):
     start = time.perf_counter()
@@ -306,43 +304,43 @@ if __name__ == '__main__':
 >>> requests.__cake__
 '✨ 🍰 ✨'
 >>>
->>> from requests_utils import requests
+>>> from resoup import requests
 >>> requests.__name__  # 호환되지 않는 dunder method
-'requests_utils.requests_proxy'  # requests와 값이 다름
+'resoup.requests_proxy'  # requests와 값이 다름
 >>> requests.__path__ # 사용할 수 없고 호환되지 않는 dunder method
-AttributeError: module 'requests_utils.requests_' has no attribute '__path__'
+AttributeError: module 'resoup.requests_' has no attribute '__path__'
 >>> requests.__cake__  # 호환되는 dunder method
 '✨ 🍰 ✨'
 ```
 
 ##### import
 
-`requests_utils.requests`는 거의 모든 경우에서 import 관련 호환성이 유지됩니다. 하지만 import와 관련해서는 몇 가지 규칙이 존재합니다.
+`resoup.requests`는 거의 모든 경우에서 import 관련 호환성이 유지됩니다. 하지만 import와 관련해서는 몇 가지 규칙이 존재합니다.
 
-`requests_utils.requests`는 `from requests_utils import requests`의 형태로만 사용할 수 있습니다.
+`resoup.requests`는 `from resoup import requests`의 형태로만 사용할 수 있습니다.
 
 ```python
-# 각 라인에서 윗줄과 아랫줄은 각각 requests를 import 할 때와 `requests_utils.requests`를 import할 때를 나타냅니다.
+# 각 라인에서 윗줄과 아랫줄은 각각 requests를 import 할 때와 `resoup.requests`를 import할 때를 나타냅니다.
 
 # requests 모듈 import
 import requests
-from requests_utils import requests  # 가능
+from resoup import requests  # 가능
 ```
 
-따라서 다음과 같은 경우는 `requests_utils.requests`에서 import가 불가능합니다.
+따라서 다음과 같은 경우는 `resoup.requests`에서 import가 불가능합니다.
 
 ```python
 # requests의 하위 모듈 import
 import requests.models  # 가능
-import requests_utils.requests.models  # 불가능!
+import resoup.requests.models  # 불가능!
 
 # requests의 하위 모듈 import (w/ from .. import ...)
 from request import models  # 가능
-from requests_utils.requests import models  # 불가능!
+from resoup.requests import models  # 불가능!
 
 # requests의 하위 모듈의 하위 구성 요소 import
 from request.models import Response  # 가능
-from requests_utils.requests.models import Response  # 불가능!
+from resoup.requests.models import Response  # 불가능!
 ```
 
 이런 경우엔 모듈 import를 이용하면 해결됩니다..
@@ -361,7 +359,7 @@ def is_response(instance):
 ```python
 # requests.models.Response로 바꾸기.
 # 장점: 깔끔하고 error-prone하지 않음.
-from requests_utils import requests  # requests 모듈 import
+from resoup import requests  # requests 모듈 import
 def is_response(instance):
     return isinstance(instance, requests.models.Response)  # requests.models.Response로 변경함
 ```
@@ -369,7 +367,7 @@ def is_response(instance):
 ```python
 # Response 정의하기.
 # 장점: 코드를 수정할 필요가 없음.
-from requests_utils import requests
+from resoup import requests
 Response = requests.models.Response
 
 def is_response(instance):
@@ -389,7 +387,7 @@ def is_response(instance):
 ```python
 >>> # 두 모듈을 동시에 사용해야 하니 이름을 변경하겠습니다.
 >>> import requests as orginal_requests
->>> from requests_utils import requests as utils_requsts
+>>> from resoup import requests as utils_requsts
 >>>
 >>> # requests 모듈은 Response를 응답합니다.
 >>> response1 = orginal_requests.get("https://peps.python.org/pep-0020/")  # 정적인 웹사이트
@@ -397,12 +395,12 @@ def is_response(instance):
 <Response [200]>
 >>> print(type(response1))  # Response 객체
 <class 'requests.models.Response'>
->>> # requests_utils.requests모듈은 ResponseProxy를 응답합니다.
+>>> # resoup.requests모듈은 ResponseProxy를 응답합니다.
 >>> response2 = utils_requsts.get("https://peps.python.org/pep-0020/")
 >>> print(response2)
 <Response [200]>
 >>> print(type(response2))  # ResponseProxy 객체
-<class 'requests_utils.response_proxy.ResponseProxy'>
+<class 'resoup.response_proxy.ResponseProxy'>
 >>>
 >>> # 다음의 모든 검사들을 통과합니다.
 >>> assert response1.text == response2.text
@@ -463,7 +461,7 @@ False
 그러면 더욱 상세한 오류 메시지를 받을 수 있습니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
 >>> response = requests.get("https://python.org")
 >>> response.soup()  # BeatifulSoup에서 사용 가능한 모든 parameter 사용 가능
@@ -495,7 +493,7 @@ parser가 없을 경우 `BeatifulSoup`는 `FeatureNotFound`에러가 나오지�
 `.soup_select()`는 텍스트나 response를 받아 BeatifulSoup의 Tag로 내보냅니다. `selector` parameter는 CSS 선택자를 받습니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
 >>> response = requests.get("https://python.org")
 >>> response.soup_select("p")
@@ -519,7 +517,7 @@ parser가 없을 경우 `BeatifulSoup`는 `FeatureNotFound`에러가 나오지�
 이 함수의 독특한 점은, `no_empty_result`라는 parameter의 존재입니다. 이 parameter가 True이면 .select()의 결과가 빈 리스트일때 `EmptyResultError`를 냅니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
 >>> response = requests.get("https://python.org")
 >>> response.soup_select("data-some-complex-and-error-prone-selector")
@@ -533,7 +531,7 @@ Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
   File "...souptools.py", line 148, in soup_select
     raise EmptyResultError(
-requests_utils.exceptions.EmptyResultError: Result of select is empty list("[]"). This error happens probably because of invalid selector or URL. Check if both selector and URL are valid. Set to False `no_empty_result` if empty list is intended. It may also because of selector is not matched with URL.
+resoup.exceptions.EmptyResultError: Result of select is empty list("[]"). This error happens probably because of invalid selector or URL. Check if both selector and URL are valid. Set to False `no_empty_result` if empty list is intended. It may also because of selector is not matched with URL.
 selector: data-some-complex-and-error-prone-selector, URL: https://www.python.org/
 ```
 
@@ -544,7 +542,7 @@ selector: data-some-complex-and-error-prone-selector, URL: https://www.python.or
 `.soup_select_one()`는 텍스트나 response를 받아 BeatifulSoup의 Tag로 내보냅니다. `selector` parameter는 CSS 선택자를 받습니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
 >>> response = requests.get('https://python.org')
 >>> response.soup_select_one('p strong', no_empty_result=True)
@@ -578,7 +576,7 @@ selector: data-some-complex-and-error-prone-selector, URL: https://www.python.or
 `no_empty_result`를 True로 하면 타입 검사 도구들도 조용해지고, 혹시라도 None이 결과값이 될 때  대신 훨씬 더 자세하며 해결책을 포함한 오류 메시지를 만들어 냅니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
 >>> response = requests.get("https://python.org")
 >>> print(response.soup_select_one("data-some-complex-and-error-prone-selector"))
@@ -592,7 +590,7 @@ Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
   File "...souptools.py", line 220, in soup_select_one
     raise EmptyResultError(
-requests_utils.exceptions.EmptyResultError: Result of select_one is None. This error happens probably because of invalid selector or URL. Check if both selector and URL are valid. Set to False `no_empty_result` if empty list is intended. It may also because of selector is not matched with URL.  
+resoup.exceptions.EmptyResultError: Result of select_one is None. This error happens probably because of invalid selector or URL. Check if both selector and URL are valid. Set to False `no_empty_result` if empty list is intended. It may also because of selector is not matched with URL.  
 selector: data-some-complex-and-error-prone-selector, URL: https://www.python.org/
 ```
 
@@ -605,7 +603,7 @@ selector: data-some-complex-and-error-prone-selector, URL: https://www.python.or
 예시 코드는 다음과 같습니다
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
 >>> response = requests.get('https://www.w3schools.com/xml/plant_catalog.xml')
 >>> selected = response.xml_select('LIGHT', no_empty_result=True)
@@ -616,7 +614,7 @@ selector: data-some-complex-and-error-prone-selector, URL: https://www.python.or
 위의 코드는 아래의 코드와 거의 같습니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>> from functools import partial
 >>>
 >>> response = requests.get('https://www.w3schools.com/xml/plant_catalog.xml')
@@ -634,7 +632,7 @@ selector: data-some-complex-and-error-prone-selector, URL: https://www.python.or
 이는 for loop나 리스트 컴프리헨션으로 해결할 수 있습니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>> tags_list = requests.get("https://python.org").soup_select("p strong")
 >>> [element.text for element in tags_list]
 ['Notice:', 'relaunched community-run job board']
@@ -647,12 +645,12 @@ selector: data-some-complex-and-error-prone-selector, URL: https://www.python.or
 BroadcastList에서는 리스트를 통해 직접 Tag에서 사용되는 속성을 사용할 수 있습니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>> tags_list = requests.get("https://python.org").soup_select("p strong")
 >>> tags_list
 [<strong>Notice:</strong>, <strong>relaunched community-run job board</strong>]
 >>> type(tags_list)
-<class 'requests_utils.broadcast_list.TagBroadcastList'>  # BroadcastList가 사용됨
+<class 'resoup.broadcast_list.TagBroadcastList'>  # BroadcastList가 사용됨
 >>> tags_list.text  # 브로드캐스팅
 ['Notice:', 'relaunched community-run job board']
 >>>
@@ -670,7 +668,7 @@ AttributeError: ResultSet object has no attribute 'text'. You're probably treati
 BroadcastList는 다음과 같은 방법을 통해 끌 수 있습니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>>
 >>> tags_list = requests.get("https://python.org").soup_select("p", use_broadcase_list=False)
 >>> type(tags_list)
@@ -690,7 +688,7 @@ BroadCastList에서는 다음과 같은 특이한 기능이 있습니다.
 만약 리스트에 정수나 슬라이스로 getitem을 요청한다면 일반적인 리스트의 역할을 수행합니다.
 
 ```python
->>> from requests_utils import requests
+>>> from resoup import requests
 >>> # 값 불러옴()
 >>> tag_broadcast_list = requests.cget("https://www.python.org/community/logos/").soup_select("img")
 >>> tag_broadcast_list
@@ -720,7 +718,7 @@ BroadCastList에서는 다음과 같은 특이한 기능이 있습니다.
 `CustomDefaults`를 통해 직접 기본값을 설정할 수 있습니다. 이 값으로 일반 get/options/head/post/put/patch/delete 및 c../a../ac.. 함수의 기본값을 효과적으로 설정할 수 있습니다.
 
 ```python
->>> from requests_utils import CustomDefaults
+>>> from resoup import CustomDefaults
 >>>
 >>> requests = CustomDefaults(headers={'User-Agent': 'User Agent for Test'})
 >>> requests.get('https://httpbin.org/headers').json()['headers']['User-Agent']

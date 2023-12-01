@@ -10,9 +10,9 @@ from frozendict import frozendict
 path = os.path.realpath(os.path.abspath(__file__))
 sys.path.insert(0, os.path.abspath(os.path.dirname(path) + '/../'))
 
-import requests_utils  # noqa: E402
-from requests_utils import requests  # noqa: E402
-from requests_utils.dealing_unhashable_args import freeze_dict_and_list, made_it_hashable  # noqa: E402
+import resoup  # noqa: E402
+from resoup import requests  # noqa: E402
+from resoup.dealing_unhashable_args import freeze_dict_and_list, made_it_hashable  # noqa: E402
 
 
 def test_freeze_dict_and_list() -> None:

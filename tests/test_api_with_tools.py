@@ -8,7 +8,7 @@ import pytest
 path = os.path.realpath(os.path.abspath(__file__))
 sys.path.insert(0, os.path.abspath(os.path.dirname(path) + '/../'))
 
-from requests_utils import api_with_tools, requests  # noqa: E402
+from resoup import api_with_tools, requests  # noqa: E402
 
 
 def test_cget() -> None:

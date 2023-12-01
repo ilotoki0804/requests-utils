@@ -7,7 +7,7 @@ from pytest import MonkeyPatch
 path = os.path.realpath(os.path.abspath(__file__))
 sys.path.insert(0, os.path.abspath(os.path.dirname(path) + '/../'))
 
-from requests_utils.custom_defaults import CustomDefaults  # noqa: E402
+from resoup.custom_defaults import CustomDefaults  # noqa: E402
 
 
 def test_CustomDefaults():

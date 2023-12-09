@@ -1,6 +1,6 @@
 # resoup
 
-**Timesaver for web scraping program developers.** (<span style="color:blue">**_re_**</span>quests + Beautiful<span style="color:blue">**_Soup_**</span>)
+**Various convenient features related to requests and BeautifulSoup.** (<span style="color:blue">**_re_**</span>quests + Beautiful<span style="color:blue">**_Soup_**</span>)
 
 1. `requests`라이브러리와 BeatifulSoup를 합쳐 몇 줄의 코드를 하나에 합칠 수 있으며,
 1. 간단하게 async, cache를 불러와 사용할 수 있습니다.
@@ -735,6 +735,8 @@ Some part of this program contains code from [requests](https://github.com/psf/r
 Some part of this program contains code from [typeshed](https://github.com/python/typeshed) library.
 
 ## Relese Note
+
+0.5.0 (2023-12-9): resoup로 이름 변경, 새 BroadcastList 기본 적용, poetry 사용, 기존 souptools 모듈 제거 및 souptoolsclass 모듈로 대체, 테스트 추가
 
 0.4.1 (2023-11-4): 긴급 버그 수정
 

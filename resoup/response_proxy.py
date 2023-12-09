@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from requests.models import Response
 
-from .souptoolsclass import SoupTools
+from .souptools import SoupTools
 
 
 class ResponseProxy(Response, SoupTools):

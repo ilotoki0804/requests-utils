@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "resoup"
-version = "0.5.0"
+version = "0.5.1"
 description = "Various convenient features related to requests."
 authors = ["ilotoki0804 <ilotoki0804@gmail.com>"]
 license = "MIT License"

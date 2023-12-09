@@ -1,7 +1,6 @@
 """빌드를 자동화합니다."""
 import os
 import shutil
-import subprocess
 from pathlib import Path
 
 try:

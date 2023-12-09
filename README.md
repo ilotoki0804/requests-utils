@@ -736,6 +736,8 @@ Some part of this program contains code from [typeshed](https://github.com/pytho
 
 ## Relese Note
 
+0.5.1 (2023-12-9): 버그 수정
+
 0.5.0 (2023-12-9): resoup로 이름 변경, 새 BroadcastList 기본 적용, poetry 사용, 기존 souptools 모듈 제거 및 souptoolsclass 모듈로 대체, 테스트 추가
 
 0.4.1 (2023-11-4): 긴급 버그 수정

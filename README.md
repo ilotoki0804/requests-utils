@@ -1,11 +1,12 @@
 # resoup
 
-**Timesaver for web scraping program developers.**
+**Timesaver for web scraping program developers.** (<span style="color:blue">**_re_**</span>quests + Beautiful<span style="color:blue">**_Soup_**</span>)
 
-`requests`라이브러리와 BeatifulSoup를 합쳐 몇 줄의 코드를 하나에 합칠 수 있으며,
-간단하게 async, cache를 불러와 사용할 수 있습니다.
+1. `requests`라이브러리와 BeatifulSoup를 합쳐 몇 줄의 코드를 하나에 합칠 수 있으며,
+1. 간단하게 async, cache를 불러와 사용할 수 있습니다.
+1. 웹 스크래핑 시 편리한 기본값도 준비되어 있고,
+1. `no_empty_result`, `attempts`, `avoid_sslerror` 등 다양하고 소소한 기능도 준비되어 있습니다.
 
-또한 `no_empty_result`는 BeatifulSoup에는 없는 독자적인 기능으로 typing 경고나 오류 가능성을 줄입니다.
 소소하지만 유용하며, 서너 줄의 코드 작성량을 줄여주는 라이브러리입니다.
 
 ## 시작하기
@@ -24,21 +25,19 @@ requests와 bs4는 같이 설치되지만 BeatifulSoup의 추가적인 parser인
 
 ## 사용법
 
+참고: 예시들의 경우 많은 경우 `get` 요청을 위주로 설명하지만, 다른 모든 메소드(options/head/post/put/patch/delete)에서도 동일하게 작동합니다.
+
 ### `resoup.requests` 모듈
 
 `resoup.requests` 모듈은 다음과 같이 import해 사용할 수 있습니다.
 
 ```python
-from resoup import requests
+from resoup import requests  # `import requests`와 호환됨.
 ```
 
-이 라이브러리는 requests 라이브러리와 99% 호환되며 (심지어 타입 힌트도 requests 라이브러리와 같이 잘 작동합니다!), 그 위에 편리한 기능을 얹은 형태입니다. 즉, 기존 `import requests`를 위의 코드로 교체하면 절대 호환성 오류가 나지 않습니다.
+이 라이브러리는 requests 라이브러리와 99% 호환되며 (심지어 타입 힌트도 requests 라이브러리와 똑같이 잘 작동합니다!), 그 위에 편리한 기능을 얹은 형태입니다. 즉, 기존 `import requests`를 위의 코드로 교체하면 기존의 코드를 망가뜨리지 않으면서도 잘 통합할 수 있습니다.
 
-이 모듈은 `requests` 라이브러리를 호환성 있게 대체하는 목적이 가지고 있습니다. 따라서 기존 코드에서 `requests`를 import하는 부분을 위의 코드로 변경하여도 깨지는 경우가 거의 발생하지 않습니다. 호환되지 않는 경우를 알고 싶다면 `requests 모듈과 호환되지 않는 부분` 파트를 참고하세요.
-
-참고: 예시들의 경우 거의 `get` 요청을 위주로 설명하지만, 다른 모든 메소드(options/head/post/put/patch/delete)에서도 동일하게 작동합니다.
-
-requests의 Session도 비슷하게 사용할 수 있습니다
+requests의 Session도 비슷하게 사용할 수 있습니다.
 
 ```python
 from resoup import requests

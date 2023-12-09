@@ -1,4 +1,0 @@
-requests
-beautifulsoup4
-frozendict
-typing_extensions

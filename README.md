@@ -736,6 +736,8 @@ Some part of this program contains code from [typeshed](https://github.com/pytho
 
 ## Relese Note
 
+0.5.2 (2023-12-26): Timeout 오류도 attempts에 걸릴 수 있도록 변경, root에서 사용할 수 있는 변수 추가, 빌드 코드 개선, 코드 개선
+
 0.5.1 (2023-12-9): 버그 수정
 
 0.5.0 (2023-12-9): resoup로 이름 변경, 새 BroadcastList 기본 적용, poetry 사용, 기존 souptools 모듈 제거 및 souptoolsclass 모듈로 대체, 테스트 추가

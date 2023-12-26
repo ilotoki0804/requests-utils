@@ -30,7 +30,7 @@ webtoon = "WebtoonScraper.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-requests = "^2.31.0"
+httpx = "^0.26.0"
 beautifulsoup4 = "^4.12.2"
 frozendict = "^2.3.10"
 typing-extensions = "^4.8.0"

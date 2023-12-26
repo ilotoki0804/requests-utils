@@ -22,8 +22,8 @@ class CustomHttpAdapter(requests.adapters.HTTPAdapter):
 
 ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
 ctx.options |= 0x4
-adapter = CustomHttpAdapter(ctx)
+sslerrorfree_adapter = CustomHttpAdapter(ctx)
 
 
 def make_session_sslerror_free(session: requests.Session, prefix: str = 'https://') -> None:
-    session.mount(prefix, adapter)
+    session.mount(prefix, sslerrorfree_adapter)

@@ -106,7 +106,7 @@ def request(
                 response = ResponseProxy(session.request(method=method, url=url, **kwargs))
                 if raise_for_status:
                     response.raise_for_status()
-        except exceptions.ConnectionError as e:
+        except (exceptions.ConnectionError, exceptions.Timeout) as e:
             if attempts == 1:
                 raise
             logging.warning('Retring...')

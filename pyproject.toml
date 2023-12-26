@@ -3,8 +3,30 @@ name = "resoup"
 version = "0.5.1"
 description = "Various convenient features related to requests."
 authors = ["ilotoki0804 <ilotoki0804@gmail.com>"]
-license = "MIT License"
-readme = "README.md"
+license = "MIT"
+readme = "README_build.md"
+keywords = ['requests', 'bs4', 'BeautifulSoup', 'async', 'caching', 'cache']
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Framework :: AsyncIO',
+    'Environment :: Web Environment',
+    'Intended Audience :: Developers',
+    'Topic :: Internet :: WWW/HTTP',
+]
+
+[tool.poetry.urls]
+# Homepage = "https://ilotoki0804.gitbook.io/resoup/"
+Documentation = "https://github.com/ilotoki0804/resoup"
+Repository = "https://github.com/ilotoki0804/resoup"
+Issues = "https://github.com/ilotoki0804/resoup/issues"
+Changelog = "https://github.com/ilotoki0804/resoup#relese-note"
+
+[tool.poetry.scripts]
+WebtoonScraper = "WebtoonScraper:__main__.main"
+webtoon = "WebtoonScraper.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -19,6 +41,7 @@ pytest-cov = "^4.1.0"
 html5lib = "^1.1"
 lxml = "^4.9.3"
 poetry = "^1.7.1"
+tomlkit = "^0.12.3"
 
 [build-system]
 requires = ["poetry-core"]

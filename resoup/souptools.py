@@ -6,11 +6,10 @@ import contextlib
 from typing import overload, Literal
 from typing_extensions import Self
 from requests.models import Response
-from bs4 import BeautifulSoup, FeatureNotFound
+from bs4 import BeautifulSoup
 from bs4.element import Tag, ResultSet
 
 from .exceptions import (
-    NoParserError,
     EmptyResultError,
 )
 from .broadcast_list import TagBroadcastList
@@ -19,7 +18,11 @@ Parsers = Literal["html.parser", "html", "lxml", "lxml-xml", "xml", "html5lib", 
 
 
 class SoupTools:
-    def __init__(self, text: str, default_parser: Parsers = "html.parser") -> None:
+    def __init__(
+        self,
+        text: str,
+        default_parser: Parsers = "html.parser"
+    ) -> None:
         self.text: str = text
         self.response: Response | None = None
         self.default_parser: Parsers = default_parser

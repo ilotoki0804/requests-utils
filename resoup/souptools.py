@@ -52,7 +52,7 @@ class SoupTools:
         selector: str,
         no_empty_result: bool = False,
         parser: Parsers | None = None,
-        use_broadcast_list: Literal[True] = ...,
+        broadcasting: Literal[True] = ...,
     ) -> TagBroadcastList:
         ...
 
@@ -62,7 +62,7 @@ class SoupTools:
         selector: str,
         no_empty_result: bool = False,
         parser: Parsers | None = None,
-        use_broadcast_list: Literal[False] = ...,
+        broadcasting: Literal[False] = ...,
     ) -> ResultSet[Tag]:
         ...
 
@@ -72,7 +72,7 @@ class SoupTools:
         selector: str,
         no_empty_result: bool = False,
         parser: Parsers | None = None,
-        use_broadcast_list: bool = True,
+        broadcasting: bool = False,
     ) -> ResultSet[Tag] | TagBroadcastList:
         ...
 
@@ -81,7 +81,7 @@ class SoupTools:
         selector: str,
         no_empty_result: bool = False,
         parser: Parsers | None = None,
-        use_broadcast_list: bool = True,
+        broadcasting: bool = False,
     ) -> ResultSet[Tag] | TagBroadcastList:
         """response.soup(parser, **kwargs).select(selector)와 거의 같습니다만 no_empty_result라는 강력한 추가 기능을 제공합니다.
 
@@ -100,7 +100,7 @@ class SoupTools:
         """
         selected = self.soup(parser).select(selector)
         if not no_empty_result or selected != []:
-            return TagBroadcastList(selected) if use_broadcast_list else selected
+            return TagBroadcastList(selected) if broadcasting else selected
 
         if self.response is None:
             raise EmptyResultError(

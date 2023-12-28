@@ -29,9 +29,9 @@ class SoupTools:
 
     @classmethod
     def from_response(cls, response: Response) -> Self:
-        new = cls(response.text)
-        new.response = response
-        return new
+        self = cls(response.text)
+        self.response = response
+        return self
 
     def __getattr__(self, name: str):
         if self.response is not None:

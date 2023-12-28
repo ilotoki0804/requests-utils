@@ -19,9 +19,10 @@ Parsers = Literal["html.parser", "html", "lxml", "lxml-xml", "xml", "html5lib", 
 
 
 class SoupTools:
-    def __init__(self, text: str) -> None:
+    def __init__(self, text: str, default_parser: Parsers = "html.parser") -> None:
         self.text: str = text
         self.response: Response | None = None
+        self.default_parser: Parsers = default_parser
 
     @classmethod
     def from_response(cls, response: Response) -> Self:
@@ -32,8 +33,6 @@ class SoupTools:
     def __getattr__(self, name: str):
         if self.response is not None:
             with contextlib.suppress(AttributeError):
-                # 만약 return 과정에서 AttributeError가 나면
-                # pass되고 아래에 있는 AttributeError가 사용됨.
                 return getattr(self.response, name)
 
         raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
@@ -42,10 +41,7 @@ class SoupTools:
         self,
         parser: Parsers | None = None,
     ) -> BeautifulSoup:
-        if parser is None:
-            # 없으면 warning이 뜸
-            parser = 'html.parser'
-        return BeautifulSoup(self.text, parser)
+        return BeautifulSoup(self.text, parser or self.default_parser)
 
     @overload
     def soup_select(

@@ -6,11 +6,10 @@ import contextlib
 from typing import overload, Literal
 from typing_extensions import Self
 from requests.models import Response
-from bs4 import BeautifulSoup, FeatureNotFound
+from bs4 import BeautifulSoup
 from bs4.element import Tag, ResultSet
 
 from .exceptions import (
-    NoParserError,
     EmptyResultError,
 )
 from .broadcast_list import TagBroadcastList
@@ -19,9 +18,14 @@ Parsers = Literal["html.parser", "html", "lxml", "lxml-xml", "xml", "html5lib", 
 
 
 class SoupTools:
-    def __init__(self, text: str) -> None:
+    def __init__(
+        self,
+        text: str,
+        default_parser: Parsers = "html.parser"
+    ) -> None:
         self.text: str = text
         self.response: Response | None = None
+        self.default_parser: Parsers = default_parser
 
     @classmethod
     def from_response(cls, response: Response) -> Self:
@@ -32,8 +36,6 @@ class SoupTools:
     def __getattr__(self, name: str):
         if self.response is not None:
             with contextlib.suppress(AttributeError):
-                # 만약 return 과정에서 AttributeError가 나면
-                # pass되고 아래에 있는 AttributeError가 사용됨.
                 return getattr(self.response, name)
 
         raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
@@ -42,10 +44,7 @@ class SoupTools:
         self,
         parser: Parsers | None = None,
     ) -> BeautifulSoup:
-        if parser is None:
-            # 없으면 warning이 뜸
-            parser = 'html.parser'
-        return BeautifulSoup(self.text, parser)
+        return BeautifulSoup(self.text, parser or self.default_parser)
 
     @overload
     def soup_select(
@@ -53,7 +52,7 @@ class SoupTools:
         selector: str,
         no_empty_result: bool = False,
         parser: Parsers | None = None,
-        use_broadcast_list: Literal[True] = ...,
+        broadcasting: Literal[True] = ...,
     ) -> TagBroadcastList:
         ...
 
@@ -63,7 +62,7 @@ class SoupTools:
         selector: str,
         no_empty_result: bool = False,
         parser: Parsers | None = None,
-        use_broadcast_list: Literal[False] = ...,
+        broadcasting: Literal[False] = ...,
     ) -> ResultSet[Tag]:
         ...
 
@@ -73,7 +72,7 @@ class SoupTools:
         selector: str,
         no_empty_result: bool = False,
         parser: Parsers | None = None,
-        use_broadcast_list: bool = True,
+        broadcasting: bool = False,
     ) -> ResultSet[Tag] | TagBroadcastList:
         ...
 
@@ -82,7 +81,7 @@ class SoupTools:
         selector: str,
         no_empty_result: bool = False,
         parser: Parsers | None = None,
-        use_broadcast_list: bool = True,
+        broadcasting: bool = False,
     ) -> ResultSet[Tag] | TagBroadcastList:
         """response.soup(parser, **kwargs).select(selector)와 거의 같습니다만 no_empty_result라는 강력한 추가 기능을 제공합니다.
 
@@ -101,7 +100,7 @@ class SoupTools:
         """
         selected = self.soup(parser).select(selector)
         if not no_empty_result or selected != []:
-            return TagBroadcastList(selected) if use_broadcast_list else selected
+            return TagBroadcastList(selected) if broadcasting else selected
 
         if self.response is None:
             raise EmptyResultError(

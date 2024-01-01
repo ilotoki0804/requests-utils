@@ -1,3 +1,6 @@
+> [!CAUTION]
+> <big>**This library is unmaintained and replaced with [hxsoup](https://github.com/ilotoki0804/hxsoup).**</big>
+
 # resoup
 
 **Various convenient features related to requests and BeautifulSoup.** (<span style="color:blue">**_re_**</span>quests + Beautiful<span style="color:blue">**_Soup_**</span>)
